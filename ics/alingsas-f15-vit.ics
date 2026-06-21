@@ -1,0 +1,133 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Alingsas HK//Ahus Beach Handboll 2026//SV
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Alingsås HK F15 Classic (f. 2011) Vit – Åhus Beach 2026
+X-WR-TIMEZONE:Europe/Stockholm
+X-WR-CALDESC:Flickor 15 år Classic (födda 2011) • Grupp 4. Källa: ahus
+ beachhandboll.cupmanager.net
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+BEGIN:VEVENT
+UID:f15-vit-vs-skara-hf-2-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260717T111500Z
+DTEND:20260717T112600Z
+SUMMARY:F15 Vit: Skara HF 2 – Alingsås HK Vit
+LOCATION:Bana 4\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar bortalag mot Skara HF 2.\nAvspark 13:15 (lokal tid). Matcht
+ id 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-stavsten-hk-2-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260717T130000Z
+DTEND:20260717T131100Z
+SUMMARY:F15 Vit: Alingsås HK Vit – Stavsten HK 2
+LOCATION:Bana 7\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar hemmalag mot Stavsten HK 2.\nAvspark 15:00 (lokal tid). Mat
+ chtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-gustavsbergs-if-hk-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260717T144500Z
+DTEND:20260717T145600Z
+SUMMARY:F15 Vit: Gustavsbergs IF HK – Alingsås HK Vit
+LOCATION:Bana 11\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar bortalag mot Gustavsbergs IF HK.\nAvspark 16:45 (lokal tid)
+ . Matchtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-ahus-handboll-1-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260717T163000Z
+DTEND:20260717T164100Z
+SUMMARY:F15 Vit: Alingsås HK Vit – Åhus Handboll 1
+LOCATION:Bana 14\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar hemmalag mot Åhus Handboll 1.\nAvspark 18:30 (lokal tid). 
+ Matchtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-ifk-malmo-hf-gul-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260718T083000Z
+DTEND:20260718T084100Z
+SUMMARY:F15 Vit: IFK Malmö HF Gul – Alingsås HK Vit
+LOCATION:Bana 3\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar bortalag mot IFK Malmö HF Gul.\nAvspark 10:30 (lokal tid).
+  Matchtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-lodde-vikings-hk-rod-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260718T093000Z
+DTEND:20260718T094100Z
+SUMMARY:F15 Vit: Alingsås HK Vit – Lödde Vikings HK Röd
+LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar hemmalag mot Lödde Vikings HK Röd.\nAvspark 11:30 (lokal 
+ tid). Matchtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager
+ .net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-ystads-if-hf-1-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260718T104500Z
+DTEND:20260718T105600Z
+SUMMARY:F15 Vit: Alingsås HK Vit – Ystads IF HF 1
+LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar hemmalag mot Ystads IF HF 1.\nAvspark 12:45 (lokal tid). Ma
+ tchtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:f15-vit-vs-huddinge-hk-2-grupp-4@ahusbeach2026.cupmanager.net
+DTSTAMP:20260621T120000Z
+DTSTART:20260718T120000Z
+DTEND:20260718T121100Z
+SUMMARY:F15 Vit: Alingsås HK Vit – Huddinge HK 2
+LOCATION:Bana 17\, Åhus Beach Handboll\, Åhus
+DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 4 – Gruppspel\nAl
+ ingsås spelar hemmalag mot Huddinge HK 2.\nAvspark 14:00 (lokal tid). Mat
+ chtid 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1
+LAST-MODIFIED:20260621T120000Z
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
