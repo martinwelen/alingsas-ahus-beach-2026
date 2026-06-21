@@ -251,7 +251,11 @@ def build_index_html(catalog):
       <li><strong>iPhone / iPad:</strong> tryck <em>Apple&nbsp;Kalender</em> – funkar bäst i <strong>Safari</strong>
           (inte Edge/Chrome). Annars: <em>Inställningar → Appar → Kalender → Kalenderkonton →
           Lägg till konto → Annat → Lägg till prenumererad kalender</em> → klistra in länken.</li>
-      <li><strong>Outlook:</strong> <em>Lägg till kalender → Prenumerera från webben</em> → klistra in länken.</li>
+      <li><strong>Outlook (t.ex. på Android):</strong> Outlook-<em>appen</em> kan inte lägga till en URL.
+          Gör det <em>en gång</em> i en webbläsare på <a href="https://outlook.com" target="_blank" rel="noopener">outlook.com</a>
+          (jobbkonto: <a href="https://outlook.office.com" target="_blank" rel="noopener">outlook.office.com</a>):
+          Kalender → <em>Lägg till kalender → Prenumerera från webben</em> → klistra in länken → Importera.
+          Kalendern syncas sedan till Outlook-appen. (Outlook kan dröja några timmar innan den hämtar ändringar.)</li>
     </ul>
     <p style="font-size:.85rem;color:#a9bcd4">
       💡 <em>Apple Kalender</em>-knappen använder <code>webcal://</code>, som många mobilwebbläsare (t.ex. Edge på Android)
