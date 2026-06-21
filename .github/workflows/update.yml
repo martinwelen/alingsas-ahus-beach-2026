@@ -3,8 +3,9 @@ name: Uppdatera schema
 # Kör i GitHubs moln – ingen lokal dator behövs.
 on:
   schedule:
-    - cron: "*/30 * * * *"   # var 30:e minut (no-op om inget ändrats)
-  workflow_dispatch:          # + manuell "Run workflow"-knapp
+    - cron: "*/30 * * * *"        # normalt: var 30:e minut (no-op om inget ändrats)
+    - cron: "*/10 * 17,18 7 *"    # turneringshelgen 17-18 juli: var 10:e minut
+  workflow_dispatch:               # + manuell "Run workflow"-knapp
 
 concurrency:
   group: update-schema

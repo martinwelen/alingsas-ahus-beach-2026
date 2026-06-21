@@ -6,12 +6,19 @@
   "display": "standalone",
   "background_color": "#f4ecdb",
   "theme_color": "#13293d",
+  "scope": "./",
   "icons": [
     {
       "src": "favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }

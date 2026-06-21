@@ -159,6 +159,27 @@ details.cal summary::before{content:"📅  "}
 .copy.mini{padding:5px 9px; font-size:.74rem}
 .copy.ok{background:#1f8a4c; color:#fff; border-color:transparent}
 .note{font-size:.82rem; color:var(--ink-soft); margin:6px 0 12px}
+
+/* lägg till på hemskärmen */
+.install{margin-top:14px; display:inline-flex; gap:8px; align-items:center; background:var(--sun); color:#fff;
+  border:none; border-radius:999px; padding:10px 17px; font-weight:800; font-size:.9rem; cursor:pointer;
+  font-family:inherit; box-shadow:var(--shadow)}
+.install:active{transform:scale(.97)}
+.sheet{position:fixed; inset:0; z-index:20; background:rgba(10,20,30,.5);
+  display:flex; align-items:flex-end; justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-card{position:relative; background:var(--paper); color:var(--ink); width:100%; max-width:480px;
+  border-radius:20px 20px 0 0; padding:22px 20px calc(22px + env(safe-area-inset-bottom));
+  box-shadow:0 -12px 44px rgba(0,0,0,.32); animation:up .26s}
+@keyframes up{from{transform:translateY(101%)}to{transform:none}}
+.sheet-card h3{margin:0 0 12px; font-family:"Anton",sans-serif; text-transform:uppercase; letter-spacing:.03em; font-weight:400}
+.sheet-x{position:absolute; top:14px; right:14px; border:none; background:var(--sand); color:var(--ink);
+  width:34px; height:34px; border-radius:50%; font-size:1rem; cursor:pointer}
+.step{display:flex; gap:11px; align-items:flex-start; margin:11px 0; font-size:.96rem; line-height:1.45}
+.step .n{flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:var(--ink); color:#fff;
+  font-weight:800; font-size:.8rem; display:flex; align-items:center; justify-content:center}
+.step b{color:var(--sun)}
+.shareicon{display:inline-block; transform:translateY(2px)}
 footer{margin-top:26px; font-size:.78rem; color:var(--ink-soft); text-align:center; line-height:1.7}
 footer a{color:var(--sea)}
 </style>
@@ -169,6 +190,7 @@ footer a{color:var(--sea)}
     <div class="kicker">Åhus Beach Handboll 2026</div>
     <h1>Alingsås&nbsp;HK<br><span class="em">matchschema</span></h1>
     <div class="dates">Fre 17 juli &amp; Lör 18 juli · 6 lag · <span id="count"></span> matcher</div>
+    <button id="install" class="install" hidden>📲 Lägg till på hemskärmen</button>
     <div class="sea-rule"></div>
   </header>
 
@@ -186,6 +208,14 @@ footer a{color:var(--sea)}
 __CAL_ITEMS__
     </ul>
   </details>
+
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-card">
+      <button class="sheet-x" id="sheetx" aria-label="Stäng">✕</button>
+      <h3>Lägg till på hemskärmen</h3>
+      <div id="sheetbody"></div>
+    </div>
+  </div>
 
   <footer>
     Live-schema · uppdateras automatiskt · senast: __UPDATED__<br>
@@ -301,6 +331,51 @@ document.addEventListener("click", async e=>{
   const o=b.textContent; b.textContent="✓ Kopierad!"; b.classList.add("ok");
   setTimeout(()=>{ b.textContent=o; b.classList.remove("ok"); }, 1600);
 });
+
+// ---- Lägg till på hemskärmen (Android-prompt + iOS/övrigt-instruktioner) ----
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+const installBtn = document.getElementById("install");
+const sheet = document.getElementById("sheet");
+const sheetBody = document.getElementById("sheetbody");
+let deferredPrompt = null;
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const ua = navigator.userAgent || "";
+const isIOS = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+const isAndroid = /android/i.test(ua);
+
+window.addEventListener("beforeinstallprompt", e=>{ e.preventDefault(); deferredPrompt = e; });
+if(!standalone){ installBtn.hidden = false; }
+
+function step(n, html){ return `<div class="step"><span class="n">${n}</span><div>${html}</div></div>`; }
+function showSheet(){
+  let body;
+  if(isIOS){
+    body = step(1, 'Öppna sidan i <b>Safari</b> (inte Chrome/Edge).')
+         + step(2, 'Tryck på <b>Dela</b>-ikonen <span class="shareicon">⎙</span> längst ned (rutan med en pil uppåt).')
+         + step(3, 'Välj <b>Lägg till på hemskärmen</b> och tryck <b>Lägg till</b>.');
+  } else if(isAndroid){
+    body = step(1, 'Tryck på <b>⋮</b>-menyn uppe till höger i webbläsaren.')
+         + step(2, 'Välj <b>Lägg till på startskärmen</b> (eller <b>Installera app</b>).')
+         + step(3, 'Bekräfta – ikonen hamnar bland dina appar.');
+  } else {
+    body = step(1, 'Klicka på <b>installationsikonen</b> i adressfältet,')
+         + step(2, 'eller meny → <b>Installera</b> / <b>Skapa genväg</b>.');
+  }
+  sheetBody.innerHTML = body;
+  sheet.hidden = false;
+}
+installBtn.addEventListener("click", async ()=>{
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    const r = await deferredPrompt.userChoice; deferredPrompt = null;
+    if(r && r.outcome === "accepted") installBtn.hidden = true;
+    return;
+  }
+  showSheet();
+});
+document.getElementById("sheetx").addEventListener("click", ()=> sheet.hidden = true);
+sheet.addEventListener("click", e=>{ if(e.target === sheet) sheet.hidden = true; });
+window.addEventListener("appinstalled", ()=>{ installBtn.hidden = true; sheet.hidden = true; });
 </script>
 </body>
 </html>
@@ -314,8 +389,29 @@ MANIFEST = {
     "display": "standalone",
     "background_color": "#f4ecdb",
     "theme_color": "#13293d",
-    "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}],
+    "scope": "./",
+    "icons": [
+        {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+        {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable"},
+    ],
 }
+
+# Service worker: nätverk-först (färsk data online) med cache-fallback (offline på plats).
+SERVICE_WORKER = """const C = "ahus-schema-v1";
+self.addEventListener("install", e => self.skipWaiting());
+self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
+self.addEventListener("fetch", e => {
+  const req = e.request;
+  if (req.method !== "GET") return;
+  e.respondWith(
+    fetch(req).then(res => {
+      const copy = res.clone();
+      caches.open(C).then(c => c.put(req, copy)).catch(() => {});
+      return res;
+    }).catch(() => caches.match(req))
+  );
+});
+"""
 
 FAVICON = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
 <rect width="64" height="64" rx="14" fill="#13293d"/>
@@ -356,7 +452,9 @@ def main():
         json.dump(MANIFEST, f, ensure_ascii=False, indent=2)
     with open(os.path.join(sch.ROOT, "favicon.svg"), "w", encoding="utf-8") as f:
         f.write(FAVICON)
-    print(f"index.html ({len(matches)} matcher), manifest.json, favicon.svg — källa: {meta.get('source')}")
+    with open(os.path.join(sch.ROOT, "sw.js"), "w", encoding="utf-8") as f:
+        f.write(SERVICE_WORKER)
+    print(f"index.html ({len(matches)} matcher), manifest.json, favicon.svg, sw.js — källa: {meta.get('source')}")
 
 
 if __name__ == "__main__":
