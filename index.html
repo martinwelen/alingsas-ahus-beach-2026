@@ -190,6 +190,18 @@ const TEAMS = [{"lag": "P15 Blå", "slug": "p15-bla", "klass": "P15", "color": "
 const DUR = 11 * 60000;
 let filter = "all";
 
+// kom ihåg valt filter (localStorage) + spegla i URL:en (delbar länk)
+const VALID = new Set(["all","P15","F15", ...TEAMS.map(t=>t.slug)]);
+function saveFilter(id){
+  try{ localStorage.setItem("ahus-filter", id); }catch(_){}
+  try{ history.replaceState(null,"", id==="all" ? location.pathname+location.search : "#"+id); }catch(_){}
+}
+(function restoreFilter(){
+  const h = (location.hash||"").replace(/^#/,"");
+  if(VALID.has(h)){ filter = h; return; }
+  try{ const s = localStorage.getItem("ahus-filter"); if(VALID.has(s)) filter = s; }catch(_){}
+})();
+
 const $ = s => document.querySelector(s);
 document.getElementById("count").textContent = MATCHES.length;
 
@@ -201,7 +213,7 @@ function pill(id, label, color, sun){
   b.setAttribute("aria-pressed", id === filter);
   b.dataset.id = id;
   b.innerHTML = (color ? `<span class="d" style="background:${color}"></span>` : "") + label;
-  b.onclick = () => { filter = id; render(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
+  b.onclick = () => { filter = id; saveFilter(id); render(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
   return b;
 }
 fwrap.appendChild(pill("all","Alla",null,true));
