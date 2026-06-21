@@ -1,0 +1,17 @@
+{
+  "name": "Alingsås HK · Åhus Beach 2026",
+  "short_name": "Alingsås Åhus",
+  "description": "Matchschema för Alingsås HK på Åhus Beach Handboll 2026",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4ecdb",
+  "theme_color": "#13293d",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

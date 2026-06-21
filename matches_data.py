@@ -21,6 +21,11 @@ MATCH_DURATION_MIN = 11
 # Tidszon: alla matcher spelas i Åhus (Europe/Stockholm). I juli = CEST = UTC+2.
 UTC_OFFSET_HOURS = 2
 
+# GitHub Pages-bas där allt hostas (delas av iCal- och sidgenereringen).
+PAGES_HOST = "martinwelen.github.io"
+PAGES_PATH = "/alingsas-ahus-beach-2026"
+PAGES_BASE = f"https://{PAGES_HOST}{PAGES_PATH}"
+
 teams = [
     {
         "lag": "P15 Blå",
@@ -134,6 +139,18 @@ teams = [
         ],
     },
 ]
+
+# Turnerings-id på cupmanager (för API-hämtning).
+TOURNAMENT_ID = "70944382"
+
+# Lagens id på cupmanager – används för robust filtrering vid API-hämtning
+# (klubben har lag i ~alla åldersklasser, så namn räcker inte).
+team_ids = {
+    "P15 Blå": 74904162, "P15 Orange": 76280580, "P15 Vit": 74904168,
+    "F15 Blå": 74294026, "F15 Gul": 76514811, "F15 Vit": 74294028,
+}
+for _t in teams:
+    _t["id"] = team_ids[_t["lag"]]
 
 # Färg per lag (hex, utan #) – används i Excel och som info.
 team_colors = {

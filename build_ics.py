@@ -1,338 +1,123 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Genererar iCalendar-filer (.ics) för Alingsås HK:s matcher på
-Åhus Beach Handboll 2026.
+"""Genererar iCalendar-filer (.ics) för Alingsås HK:s matcher.
 
-Skapar:
-  ics/alingsas-<lag>.ics   (en per lag, 6 st)
-  ics/alingsas-alla.ics    (alla sex lag i en kalender)
+  ics/alingsas-<lag>.ics   (en per lag)
+  ics/alingsas-alla.ics    (alla sex lag)
 
-Designval för prenumeration:
-  • Stabilt UID per match (lag + motståndare) → uppdateringar ÄNDRAR matchen
-    istället för att skapa dubbletter, även om tid/bana flyttas.
-  • SEQUENCE = REVISION och DTSTAMP/LAST-MODIFIED = LAST_UPDATED → bumpa dessa
-    i matches_data.py vid uppdatering så kalenderappar plockar upp ändringar.
-  • Tider skrivs i UTC (Z). Juli i Åhus = CEST = UTC+2.
+Data via schedule.load_matches() (matches.json om den finns, annars seed).
+Prenumeration: stabilt UID per match → uppdateringar ändrar matchen i stället
+för att skapa dubbletter. SEQUENCE/DTSTAMP drivs av meta (seq/generated) så
+ändringar plockas upp av kalenderappar. Tider skrivs i UTC.
 """
 
 import os
-import re
-import unicodedata
+from datetime import datetime, timezone, timedelta
 
-from matches_data import (
-    teams, team_colors, all_matches, iter_matches,
-    REVISION, LAST_UPDATED, MATCH_DURATION_MIN, UTC_OFFSET_HOURS,
-)
+import matches_data as md
+import schedule as sch
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = os.path.join(ROOT, "ics")
+OUT_DIR = os.path.join(sch.ROOT, "ics")
 PRODID = "-//Alingsas HK//Ahus Beach Handboll 2026//SV"
 SOURCE_NOTE = "Källa: ahusbeachhandboll.cupmanager.net"
-
-# GitHub Pages-bas där filerna hostas (för prenumerationslänkar).
-PAGES_HOST = "martinwelen.github.io"
-PAGES_PATH = "/alingsas-ahus-beach-2026"
-PAGES_BASE = f"https://{PAGES_HOST}{PAGES_PATH}"
+DURATION_MS = md.MATCH_DURATION_MIN * 60 * 1000
 
 
-# ---------------------------------------------------------------------------
-# Hjälpare
-# ---------------------------------------------------------------------------
-def dtstamp_compact(iso_utc):
-    """'2026-06-21T12:00:00Z' -> '20260621T120000Z'."""
-    return re.sub(r"[-:]", "", iso_utc)
+def ms_to_utc(ms):
+    return datetime.fromtimestamp(ms / 1000, timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def to_utc_stamp(datum, tid):
-    """('2026-07-17','13:45') lokal CEST -> UTC-stämpel '20260717T114500Z'."""
-    y, mo, d = (int(x) for x in datum.split("-"))
-    hh, mm = (int(x) for x in tid.split(":"))
-    # subtrahera offset för att gå från lokal tid till UTC
-    total_min = hh * 60 + mm - UTC_OFFSET_HOURS * 60
-    # alla matcher är mitt på dagen → ingen dygnsövergång, men hantera ändå
-    day_shift, total_min = divmod(total_min, 24 * 60)
-    hh, mm = divmod(total_min, 60)
-    d += day_shift
-    return f"{y:04d}{mo:02d}{d:02d}T{hh:02d}{mm:02d}00Z"
+def iso_to_utc_compact(iso):
+    try:
+        dt = datetime.fromisoformat(iso)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    except Exception:
+        return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def add_minutes_stamp(stamp, minutes):
-    """Lägg till minuter på en UTC-stämpel 'YYYYMMDDThhmmssZ'."""
-    y = int(stamp[0:4]); mo = int(stamp[4:6]); d = int(stamp[6:8])
-    hh = int(stamp[9:11]); mm = int(stamp[11:13])
-    total = hh * 60 + mm + minutes
-    day_shift, total = divmod(total, 24 * 60)
-    hh, mm = divmod(total, 60)
-    d += day_shift
-    return f"{y:04d}{mo:02d}{d:02d}T{hh:02d}{mm:02d}00Z"
-
-
-def slugify_ascii(s):
+def slug_ascii(s):
+    import unicodedata, re
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
-    s = re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
-    return s
+    return re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
 
 
 def uid_for(m):
-    """Stabilt UID: bygger på lag + motståndare (varje lag möter varje
-    motståndare en gång i gruppspelet). Tål ändrad tid/bana."""
-    base = f"{m['slug']}-vs-{slugify_ascii(m['mots'])}-{slugify_ascii(m['grupp'])}"
+    base = f"{m['slug']}-vs-{slug_ascii(m['mots'])}-{slug_ascii(str(m['grupp']))}"
     return f"{base}@ahusbeach2026.cupmanager.net"
 
 
-def esc(text):
-    """Escapa TEXT-värde enligt RFC 5545."""
-    return (text.replace("\\", "\\\\")
-                .replace(";", "\\;")
-                .replace(",", "\\,")
-                .replace("\n", "\\n"))
+def esc(t):
+    return (t.replace("\\", "\\\\").replace(";", "\\;")
+             .replace(",", "\\,").replace("\n", "\\n"))
 
 
 def fold(line):
-    """Vik rader till <=75 oktetter (RFC 5545), utan att klippa mitt i ett
-    UTF-8-tecken. Fortsättningsrader inleds med ett mellanslag."""
     raw = line.encode("utf-8")
     if len(raw) <= 75:
         return line
-    parts = []
-    start = 0
-    limit = 75
+    parts, start, limit = [], 0, 75
     while start < len(raw):
         end = min(start + limit, len(raw))
-        # backa så vi inte delar ett multibyte-tecken
         while end < len(raw) and (raw[end] & 0xC0) == 0x80:
             end -= 1
-        parts.append(raw[start:end])
-        start = end
-        limit = 74  # fortsättningsrader får ett inledande mellanslag
-    out = parts[0].decode("utf-8")
-    for p in parts[1:]:
-        out += "\r\n " + p.decode("utf-8")
-    return out
+        parts.append(raw[start:end]); start = end; limit = 74
+    return parts[0].decode("utf-8") + "".join("\r\n " + p.decode("utf-8") for p in parts[1:])
 
 
-def vevent(m):
-    dtstart = to_utc_stamp(m["datum"], m["tid"])
-    dtend = add_minutes_stamp(dtstart, MATCH_DURATION_MIN)
+def vevent(m, seq, dtstamp):
+    dtstart = ms_to_utc(m["start_ms"])
+    dtend = ms_to_utc(m["start_ms"] + DURATION_MS)
     summary = f"{m['lag']}: {m['hemma']} – {m['borta']}"
     location = f"Bana {m['bana']}, Åhus Beach Handboll, Åhus"
-    desc = (f"{m['klass_full']}\\n{m['grupp']} – Gruppspel\\n"
+    desc = (f"{sch.TEAM_BY_SLUG[m['slug']]['klass']}\\n{m['grupp']}\\n"
             f"Alingsås spelar {m['hb'].lower()}lag mot {m['mots']}.\\n"
             f"Avspark {m['tid']} (lokal tid). Matchtid 2×5 min + 60 s paus.\\n{SOURCE_NOTE}")
-    lines = [
-        "BEGIN:VEVENT",
-        f"UID:{uid_for(m)}",
-        f"DTSTAMP:{dtstamp_compact(LAST_UPDATED)}",
-        f"DTSTART:{dtstart}",
-        f"DTEND:{dtend}",
-        f"SUMMARY:{esc(summary)}",
-        f"LOCATION:{esc(location)}",
-        f"DESCRIPTION:{desc}",  # redan escapad där det behövs (\\n)
-        f"SEQUENCE:{REVISION}",
-        f"LAST-MODIFIED:{dtstamp_compact(LAST_UPDATED)}",
-        "STATUS:CONFIRMED",
-        "TRANSP:OPAQUE",
-        "END:VEVENT",
+    return [
+        "BEGIN:VEVENT", f"UID:{uid_for(m)}", f"DTSTAMP:{dtstamp}",
+        f"DTSTART:{dtstart}", f"DTEND:{dtend}",
+        f"SUMMARY:{esc(summary)}", f"LOCATION:{esc(location)}",
+        f"DESCRIPTION:{desc}", f"SEQUENCE:{seq}", f"LAST-MODIFIED:{dtstamp}",
+        "STATUS:CONFIRMED", "TRANSP:OPAQUE", "END:VEVENT",
     ]
-    return lines
 
 
-def build_calendar(rows, cal_name, cal_desc):
-    rows = sorted(rows, key=lambda m: (m["datum"], m["tid"], m["bana"]))
+def build_calendar(rows, cal_name, cal_desc, seq, dtstamp):
+    rows = sorted(rows, key=lambda m: (m["start_ms"], str(m["bana"])))
     lines = [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        f"PRODID:{PRODID}",
-        "CALSCALE:GREGORIAN",
-        "METHOD:PUBLISH",
-        f"X-WR-CALNAME:{esc(cal_name)}",
-        "X-WR-TIMEZONE:Europe/Stockholm",
+        "BEGIN:VCALENDAR", "VERSION:2.0", f"PRODID:{PRODID}",
+        "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+        f"X-WR-CALNAME:{esc(cal_name)}", "X-WR-TIMEZONE:Europe/Stockholm",
         f"X-WR-CALDESC:{esc(cal_desc)}",
-        "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
-        "X-PUBLISHED-TTL:PT12H",
+        "REFRESH-INTERVAL;VALUE=DURATION:PT12H", "X-PUBLISHED-TTL:PT12H",
     ]
     for m in rows:
-        lines.extend(vevent(m))
+        lines += vevent(m, seq, dtstamp)
     lines.append("END:VCALENDAR")
     return "\r\n".join(fold(l) for l in lines) + "\r\n"
 
 
-def build_index_html(catalog):
-    """catalog: lista av (titel, undertitel, ics-filnamn, antal, färg)."""
-    def card(titel, under, fn, n, farg, primar=False):
-        ics_url = f"{PAGES_BASE}/ics/{fn}"
-        webcal = f"webcal://{PAGES_HOST}{PAGES_PATH}/ics/{fn}"
-        gcal = "https://calendar.google.com/calendar/r?cid=" + webcal
-        cls = "card primary" if primar else "card"
-        return f"""      <div class="{cls}" style="--accent:#{farg}">
-        <div class="card-head"><span class="dot"></span>
-          <div><h3>{titel}</h3><p class="sub">{under} · {n} matcher</p></div>
-        </div>
-        <div class="actions">
-          <button class="btn btn-main copy" data-url="{ics_url}">📋 Kopiera länk</button>
-          <a class="btn" href="{webcal}">Apple&nbsp;Kalender</a>
-          <a class="btn" href="{gcal}" target="_blank" rel="noopener">Google&nbsp;(dator)</a>
-          <a class="btn btn-ghost" href="ics/{fn}" download title="Engångsfil – uppdateras inte">.ics&nbsp;(engångs)</a>
-        </div>
-        <code class="url" tabindex="0" title="Tryck för att markera">{ics_url}</code>
-      </div>"""
-
-    cards = "\n".join(card(*c[:5], primar=c[5]) for c in catalog)
-    return f"""<!doctype html>
-<html lang="sv">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alingsås HK – Åhus Beach Handboll 2026 · Matchkalendrar</title>
-<style>
-  :root {{ color-scheme: light dark; }}
-  * {{ box-sizing: border-box; }}
-  body {{ margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-         background:#0f1c2e; color:#eaf0f7; line-height:1.5; }}
-  .wrap {{ max-width: 760px; margin:0 auto; padding: 32px 20px 64px; }}
-  header h1 {{ font-size: clamp(1.5rem,4vw,2.2rem); margin:0 0 6px; }}
-  header p {{ margin:0 0 4px; color:#a9bcd4; }}
-  .grid {{ display:grid; gap:14px; margin-top:28px; }}
-  .card {{ background:#16263d; border:1px solid #243750; border-left:5px solid var(--accent);
-          border-radius:12px; padding:16px 18px; }}
-  .card.primary {{ background:#1b3150; }}
-  .card-head {{ display:flex; align-items:center; gap:12px; }}
-  .dot {{ width:14px; height:14px; border-radius:50%; background:var(--accent); flex:0 0 auto; }}
-  h3 {{ margin:0; font-size:1.05rem; }}
-  .sub {{ margin:2px 0 0; font-size:.85rem; color:#a9bcd4; }}
-  .actions {{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }}
-  .btn {{ display:inline-block; padding:9px 14px; border-radius:8px; font-size:.9rem;
-         font-weight:600; text-decoration:none; background:#27405f; color:#eaf0f7;
-         border:1px solid #36527a; cursor:pointer; font-family:inherit; }}
-  .btn-main {{ background:var(--accent); color:#fff; border-color:transparent; }}
-  .btn-ghost {{ background:transparent; }}
-  .btn:hover {{ filter:brightness(1.12); }}
-  .btn.ok {{ background:#1f8a4c; color:#fff; }}
-  .url {{ display:block; margin-top:12px; font-size:.72rem; color:#7e93ad; word-break:break-all;
-         cursor:text; user-select:all; -webkit-user-select:all; }}
-  .info {{ margin-top:36px; background:#16263d; border:1px solid #243750; border-radius:12px; padding:18px 20px; }}
-  .info h2 {{ margin:0 0 10px; font-size:1.1rem; }}
-  .info li {{ margin:4px 0; }}
-  footer {{ margin-top:32px; font-size:.8rem; color:#7e93ad; }}
-  a {{ color:#7db3ff; }}
-  .warn {{ margin-top:20px; background:#3a2b12; border:1px solid #7a5a1f; color:#ffe2b0;
-          border-radius:10px; padding:12px 16px; font-size:.9rem; }}
-  .warn u {{ text-decoration: underline; }}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <h1>Alingsås HK – Åhus Beach Handboll 2026</h1>
-    <p>Matchkalendrar att prenumerera på. Uppdateras löpande – ändrade tider/banor
-       slår igenom automatiskt i din kalender.</p>
-    <p>Speldagar: <strong>fredag 17 juli</strong> &amp; <strong>lördag 18 juli 2026</strong>.</p>
-  </header>
-
-  <div class="warn">
-    ⚠️ <strong>Prenumerera på länken – importera inte .ics-filen.</strong>
-    Importerar du filen blir matcherna fasta kopior som <u>aldrig uppdateras</u>.
-    Prenumererar du på URL:en hålls kalendern automatiskt i synk. Se ”Så prenumererar du” längst ned.
-  </div>
-
-  <div class="grid">
-{cards}
-  </div>
-
-  <div class="info">
-    <h2>Så prenumererar du</h2>
-    <p style="margin-top:0;color:#a9bcd4">Tryck <strong>📋 Kopiera länk</strong> på laget du vill följa, och följ sedan din telefon:</p>
-    <ul>
-      <li><strong>Android / Google Kalender:</strong> Google-appen på mobilen kan tyvärr inte lägga till en
-          prenumeration själv. Gör det <em>en gång</em> på dator: gå till
-          <a href="https://calendar.google.com" target="_blank" rel="noopener">calendar.google.com</a> →
-          <em>Andra kalendrar (+)</em> → <em>Från URL</em> → klistra in länken. Den dyker sedan upp i mobilappen.
-          (Eller tryck <em>Google (dator)</em>-knappen om du är på en dator.)</li>
-      <li><strong>iPhone / iPad:</strong> tryck <em>Apple&nbsp;Kalender</em> – funkar bäst i <strong>Safari</strong>
-          (inte Edge/Chrome). Annars: <em>Inställningar → Appar → Kalender → Kalenderkonton →
-          Lägg till konto → Annat → Lägg till prenumererad kalender</em> → klistra in länken.</li>
-      <li><strong>Outlook (t.ex. på Android):</strong> Outlook-<em>appen</em> kan inte lägga till en URL.
-          Gör det <em>en gång</em> i en webbläsare på <a href="https://outlook.com" target="_blank" rel="noopener">outlook.com</a>
-          (jobbkonto: <a href="https://outlook.office.com" target="_blank" rel="noopener">outlook.office.com</a>):
-          Kalender → <em>Lägg till kalender → Prenumerera från webben</em> → klistra in länken → Importera.
-          Kalendern syncas sedan till Outlook-appen. (Outlook kan dröja några timmar innan den hämtar ändringar.)</li>
-    </ul>
-    <p style="font-size:.85rem;color:#a9bcd4">
-      💡 <em>Apple Kalender</em>-knappen använder <code>webcal://</code>, som många mobilwebbläsare (t.ex. Edge på Android)
-      ignorerar – händer inget när du trycker är det därför. Använd <strong>Kopiera länk</strong> i stället.</p>
-    <p style="font-size:.85rem;color:#a9bcd4;margin-bottom:0">
-      Obs: gruppspelet (51 matcher). Slutspelet på lördag em avgörs av resultaten och läggs till när lottningen är klar.
-      Matchtid: 2×5 min + 60 s paus. Tider kan ändras av arrangören.</p>
-  </div>
-
-  <footer>
-    Källa: ahusbeachhandboll.cupmanager.net · Senast uppdaterad {LAST_UPDATED}
-  </footer>
-</div>
-<script>
-  document.querySelectorAll('.copy').forEach(function(b) {{
-    b.addEventListener('click', async function() {{
-      var url = b.getAttribute('data-url');
-      try {{
-        await navigator.clipboard.writeText(url);
-      }} catch (e) {{
-        // Fallback om clipboard-API saknas: markera URL:en under kortet
-        var code = b.closest('.card').querySelector('.url');
-        var r = document.createRange(); r.selectNodeContents(code);
-        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-      }}
-      var old = b.textContent;
-      b.textContent = '✓ Kopierad!'; b.classList.add('ok');
-      setTimeout(function() {{ b.textContent = old; b.classList.remove('ok'); }}, 1800);
-    }});
-  }});
-</script>
-</body>
-</html>
-"""
-
-
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
-    written = []
-    catalog = []
+    matches, meta = sch.load_matches()
+    seq = int(meta.get("seq", md.REVISION))
+    dtstamp = iso_to_utc_compact(meta.get("generated", md.LAST_UPDATED))
+    groups = sch.by_team(matches)
 
-    # Samlad – läggs först i listan (primärt kort)
-    rows = all_matches()
-    fn = "alingsas-alla.ics"
-    cal = build_calendar(
-        rows,
-        cal_name="Alingsås HK (alla lag) – Åhus Beach 2026",
-        cal_desc=f"Alla sex lag (3× P15 + 3× F15), gruppspel. {SOURCE_NOTE}",
-    )
-    with open(os.path.join(OUT_DIR, fn), "w", encoding="utf-8", newline="") as f:
-        f.write(cal)
-    written.append((fn, len(rows)))
-    catalog.append(("Alla sex lag", "P15 + F15 – hela klubben", fn, len(rows), "1F3864", True))
-
-    # En per lag
-    for t in teams:
-        rows = list(iter_matches(t))
-        fn = f"alingsas-{t['slug']}.ics"
-        cal = build_calendar(
-            rows,
-            cal_name=f"{t['fullnamn']} – Åhus Beach 2026",
-            cal_desc=f"{t['klass']} • {t['grupp']}. {SOURCE_NOTE}",
-        )
+    def write(fn, rows, name, desc):
         with open(os.path.join(OUT_DIR, fn), "w", encoding="utf-8", newline="") as f:
-            f.write(cal)
-        written.append((fn, len(rows)))
-        catalog.append((t["fullnamn"], f"{t['klass']} · {t['grupp']}",
-                        fn, len(rows), team_colors[t["lag"]], False))
+            f.write(build_calendar(rows, name, desc, seq, dtstamp))
+        print(f"  {fn:28s} {len(rows)} matcher")
 
-    # Landningssida
-    with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
-        f.write(build_index_html(catalog))
-
-    print(f"REVISION={REVISION}  LAST_UPDATED={LAST_UPDATED}")
-    for fn, n in written:
-        print(f"  {fn:28s} {n} matcher")
-    print("  index.html genererad")
+    write("alingsas-alla.ics", matches,
+          "Alingsås HK (alla lag) – Åhus Beach 2026",
+          f"Alla sex lag (3× P15 + 3× F15). {SOURCE_NOTE}")
+    for t in md.teams:
+        write(f"alingsas-{t['slug']}.ics", groups.get(t["slug"], []),
+              f"{t['fullnamn']} – Åhus Beach 2026",
+              f"{t['klass']} • {t['grupp']}. {SOURCE_NOTE}")
+    print(f"källa={meta.get('source')} seq={seq}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,49 @@
+name: Uppdatera schema
+
+# Kör i GitHubs moln – ingen lokal dator behövs.
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # var 30:e minut (no-op om inget ändrats)
+  workflow_dispatch:          # + manuell "Run workflow"-knapp
+
+concurrency:
+  group: update-schema
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installera beroenden
+        run: pip install openpyxl
+
+      - name: Hämta matcher från cupmanager
+        run: python fetch_matches.py
+
+      - name: Bygg om kalendrar, Excel och sida
+        run: |
+          python build_ics.py
+          python build_excel.py
+          python build_site.py
+
+      - name: Committa om något ändrats
+        run: |
+          git config user.name "ahus-schema-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Inga ändringar – inget att committa."
+          else
+            git commit -m "Auto-uppdatering av schema ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+            git push
+            echo "Ändringar publicerade."
+          fi

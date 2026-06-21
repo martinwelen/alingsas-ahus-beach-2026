@@ -9,7 +9,8 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
-from matches_data import teams, team_colors, all_matches, iter_matches
+import schedule as sch
+from matches_data import teams, team_colors
 
 # ---------------------------------------------------------------------------
 # Stilar
@@ -82,8 +83,9 @@ def set_widths(ws):
 
 def main():
     wb = Workbook()
-    all_rows = all_matches()
-    all_sorted = sorted(all_rows, key=lambda m: (m["datum"], m["tid"], m["bana"]))
+    all_rows, _meta = sch.load_matches()
+    groups = sch.by_team(all_rows)
+    all_sorted = sorted(all_rows, key=lambda m: (m["start_ms"], str(m["bana"])))
 
     # Blad 1: Alla matcher (kronologiskt)
     ws = wb.active
@@ -105,7 +107,7 @@ def main():
         ws = wb.create_sheet(title=t["lag"])
         ws.cell(row=1, column=1, value=t["fullnamn"]).font = TITLE_FONT
         ws.cell(row=2, column=1, value=f"{t['klass']} • {t['grupp']}").font = SUB_FONT
-        rows = sorted(iter_matches(t), key=lambda m: (m["datum"], m["tid"]))
+        rows = sorted(groups.get(t["slug"], []), key=lambda m: m["start_ms"])
         write_match_table(ws, 4, rows)
         ws.freeze_panes = "A5"
         set_widths(ws)
