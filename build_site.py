@@ -50,13 +50,21 @@ TEMPLATE = r"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Alingsås HK · Åhus Beach Handboll 2026</title>
+<title>AHK Åhus Beach 2026</title>
 <meta name="theme-color" content="#13293d">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Alingsås Åhus">
+<meta name="apple-mobile-web-app-title" content="AHK Åhus">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Live-matchschema för Alingsås HK:s sex lag på Åhus Beach Handboll 2026.">
+<meta property="og:title" content="AHK Åhus Beach 2026">
+<meta property="og:description" content="Live-matchschema för Alingsås HK:s sex lag (P15 + F15). Alltid uppdaterat.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="__BASE__/">
+<meta property="og:image" content="__BASE__/icon-512.png">
+<meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -457,6 +465,7 @@ def main():
             .replace("__TEAMS__", json.dumps(teams_js, ensure_ascii=False))
             .replace("__DUR_MIN__", str(DUR_MIN))
             .replace("__CAL_ITEMS__", cal_section())
+            .replace("__BASE__", md.PAGES_BASE)
             .replace("__UPDATED__", human_updated(meta)))
     with open(os.path.join(sch.ROOT, "index.html"), "w", encoding="utf-8") as f:
         f.write(html)
