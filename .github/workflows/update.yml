@@ -30,21 +30,29 @@ jobs:
       - name: Hämta matcher från cupmanager
         run: python fetch_matches.py
 
+      - name: Avgör om matchdatan ändrats
+        id: changed
+        run: |
+          if git diff --quiet -- matches.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "matches.json oförändrad – hoppar över bygge/commit."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Bygg om kalendrar, Excel och sida
+        if: steps.changed.outputs.changed == 'true'
         run: |
           python build_ics.py
           python build_excel.py
           python build_site.py
 
-      - name: Committa om något ändrats
+      - name: Committa och publicera
+        if: steps.changed.outputs.changed == 'true'
         run: |
           git config user.name "ahus-schema-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          if git diff --staged --quiet; then
-            echo "Inga ändringar – inget att committa."
-          else
-            git commit -m "Auto-uppdatering av schema ($(date -u '+%Y-%m-%d %H:%M UTC'))"
-            git push
-            echo "Ändringar publicerade."
-          fi
+          git commit -m "Auto-uppdatering av schema ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+          git push
+          echo "Ändringar publicerade."
