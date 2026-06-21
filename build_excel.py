@@ -5,6 +5,8 @@ på Åhus Beach Handboll 2026 (gruppspel). Källa: cupmanager.net (lagsidorna).
 
 Matchdatan ligger i matches_data.py (gemensam källa med iCal-genereringen)."""
 
+import os
+
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -145,7 +147,7 @@ def main():
         if font:
             cell.font = font
 
-    out = "/home/martin/dev/ahusbeach/Alingsas_HK_Ahus_Beach_2026.xlsx"
+    out = os.path.join(sch.ROOT, "Alingsas_HK_Ahus_Beach_2026.xlsx")
     wb.save(out)
     print("Sparade", out)
     print("Antal matcher totalt:", len(all_rows))
