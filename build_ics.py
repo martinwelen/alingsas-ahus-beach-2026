@@ -169,11 +169,12 @@ def build_index_html(catalog):
           <div><h3>{titel}</h3><p class="sub">{under} · {n} matcher</p></div>
         </div>
         <div class="actions">
-          <a class="btn btn-main" href="{webcal}">Prenumerera</a>
-          <a class="btn" href="{gcal}" target="_blank" rel="noopener">Google&nbsp;Calendar</a>
-          <a class="btn btn-ghost" href="ics/{fn}" download>Ladda ner .ics</a>
+          <button class="btn btn-main copy" data-url="{ics_url}">📋 Kopiera länk</button>
+          <a class="btn" href="{webcal}">Apple&nbsp;Kalender</a>
+          <a class="btn" href="{gcal}" target="_blank" rel="noopener">Google&nbsp;(dator)</a>
+          <a class="btn btn-ghost" href="ics/{fn}" download title="Engångsfil – uppdateras inte">.ics&nbsp;(engångs)</a>
         </div>
-        <code class="url">{ics_url}</code>
+        <code class="url" tabindex="0" title="Tryck för att markera">{ics_url}</code>
       </div>"""
 
     cards = "\n".join(card(*c[:5], primar=c[5]) for c in catalog)
@@ -200,18 +201,23 @@ def build_index_html(catalog):
   h3 {{ margin:0; font-size:1.05rem; }}
   .sub {{ margin:2px 0 0; font-size:.85rem; color:#a9bcd4; }}
   .actions {{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }}
-  .btn {{ display:inline-block; padding:8px 14px; border-radius:8px; font-size:.9rem;
+  .btn {{ display:inline-block; padding:9px 14px; border-radius:8px; font-size:.9rem;
          font-weight:600; text-decoration:none; background:#27405f; color:#eaf0f7;
-         border:1px solid #36527a; }}
+         border:1px solid #36527a; cursor:pointer; font-family:inherit; }}
   .btn-main {{ background:var(--accent); color:#fff; border-color:transparent; }}
   .btn-ghost {{ background:transparent; }}
   .btn:hover {{ filter:brightness(1.12); }}
-  .url {{ display:block; margin-top:12px; font-size:.72rem; color:#7e93ad; word-break:break-all; }}
+  .btn.ok {{ background:#1f8a4c; color:#fff; }}
+  .url {{ display:block; margin-top:12px; font-size:.72rem; color:#7e93ad; word-break:break-all;
+         cursor:text; user-select:all; -webkit-user-select:all; }}
   .info {{ margin-top:36px; background:#16263d; border:1px solid #243750; border-radius:12px; padding:18px 20px; }}
   .info h2 {{ margin:0 0 10px; font-size:1.1rem; }}
   .info li {{ margin:4px 0; }}
   footer {{ margin-top:32px; font-size:.8rem; color:#7e93ad; }}
   a {{ color:#7db3ff; }}
+  .warn {{ margin-top:20px; background:#3a2b12; border:1px solid #7a5a1f; color:#ffe2b0;
+          border-radius:10px; padding:12px 16px; font-size:.9rem; }}
+  .warn u {{ text-decoration: underline; }}
 </style>
 </head>
 <body>
@@ -223,18 +229,33 @@ def build_index_html(catalog):
     <p>Speldagar: <strong>fredag 17 juli</strong> &amp; <strong>lördag 18 juli 2026</strong>.</p>
   </header>
 
+  <div class="warn">
+    ⚠️ <strong>Prenumerera på länken – importera inte .ics-filen.</strong>
+    Importerar du filen blir matcherna fasta kopior som <u>aldrig uppdateras</u>.
+    Prenumererar du på URL:en hålls kalendern automatiskt i synk. Se ”Så prenumererar du” längst ned.
+  </div>
+
   <div class="grid">
 {cards}
   </div>
 
   <div class="info">
     <h2>Så prenumererar du</h2>
+    <p style="margin-top:0;color:#a9bcd4">Tryck <strong>📋 Kopiera länk</strong> på laget du vill följa, och följ sedan din telefon:</p>
     <ul>
-      <li><strong>iPhone/iPad &amp; Mac:</strong> tryck på <em>Prenumerera</em> – kalendern öppnas och du bekräftar.</li>
-      <li><strong>Google Kalender:</strong> tryck på <em>Google Calendar</em> (funkar bäst på dator) eller lägg till URL:en under
-          ”Andra kalendrar → Från URL”.</li>
-      <li><strong>Outlook:</strong> Lägg till kalender → Prenumerera från webben → klistra in .ics-URL:en.</li>
+      <li><strong>Android / Google Kalender:</strong> Google-appen på mobilen kan tyvärr inte lägga till en
+          prenumeration själv. Gör det <em>en gång</em> på dator: gå till
+          <a href="https://calendar.google.com" target="_blank" rel="noopener">calendar.google.com</a> →
+          <em>Andra kalendrar (+)</em> → <em>Från URL</em> → klistra in länken. Den dyker sedan upp i mobilappen.
+          (Eller tryck <em>Google (dator)</em>-knappen om du är på en dator.)</li>
+      <li><strong>iPhone / iPad:</strong> tryck <em>Apple&nbsp;Kalender</em> – funkar bäst i <strong>Safari</strong>
+          (inte Edge/Chrome). Annars: <em>Inställningar → Appar → Kalender → Kalenderkonton →
+          Lägg till konto → Annat → Lägg till prenumererad kalender</em> → klistra in länken.</li>
+      <li><strong>Outlook:</strong> <em>Lägg till kalender → Prenumerera från webben</em> → klistra in länken.</li>
     </ul>
+    <p style="font-size:.85rem;color:#a9bcd4">
+      💡 <em>Apple Kalender</em>-knappen använder <code>webcal://</code>, som många mobilwebbläsare (t.ex. Edge på Android)
+      ignorerar – händer inget när du trycker är det därför. Använd <strong>Kopiera länk</strong> i stället.</p>
     <p style="font-size:.85rem;color:#a9bcd4;margin-bottom:0">
       Obs: gruppspelet (51 matcher). Slutspelet på lördag em avgörs av resultaten och läggs till när lottningen är klar.
       Matchtid: 2×5 min + 60 s paus. Tider kan ändras av arrangören.</p>
@@ -244,6 +265,24 @@ def build_index_html(catalog):
     Källa: ahusbeachhandboll.cupmanager.net · Senast uppdaterad {LAST_UPDATED}
   </footer>
 </div>
+<script>
+  document.querySelectorAll('.copy').forEach(function(b) {{
+    b.addEventListener('click', async function() {{
+      var url = b.getAttribute('data-url');
+      try {{
+        await navigator.clipboard.writeText(url);
+      }} catch (e) {{
+        // Fallback om clipboard-API saknas: markera URL:en under kortet
+        var code = b.closest('.card').querySelector('.url');
+        var r = document.createRange(); r.selectNodeContents(code);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      }}
+      var old = b.textContent;
+      b.textContent = '✓ Kopierad!'; b.classList.add('ok');
+      setTimeout(function() {{ b.textContent = old; b.classList.remove('ok'); }}, 1800);
+    }});
+  }});
+</script>
 </body>
 </html>
 """
