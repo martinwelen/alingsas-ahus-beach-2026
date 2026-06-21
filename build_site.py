@@ -63,7 +63,8 @@ TEMPLATE = r"""<!doctype html>
 <meta property="og:image" content="__BASE__/icon-512.png">
 <meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/svg+xml" href="Alingsas_HK_logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -402,8 +403,8 @@ window.addEventListener("appinstalled", ()=>{ installBtn.hidden = true; sheet.hi
 """
 
 MANIFEST = {
-    "name": "Alingsås HK · Åhus Beach 2026",
-    "short_name": "Alingsås Åhus",
+    "name": "AHK Åhus Beach 2026",
+    "short_name": "AHK Åhus",
     "description": "Matchschema för Alingsås HK på Åhus Beach Handboll 2026",
     "start_url": ".",
     "display": "standalone",
@@ -411,8 +412,9 @@ MANIFEST = {
     "theme_color": "#13293d",
     "scope": "./",
     "icons": [
-        {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
-        {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable"},
+        {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+        {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+        {"src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
     ],
 }
 
@@ -431,15 +433,6 @@ self.addEventListener("fetch", e => {
     }).catch(() => caches.match(req))
   );
 });
-"""
-
-FAVICON = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<rect width="64" height="64" rx="14" fill="#13293d"/>
-<circle cx="44" cy="20" r="9" fill="#f7a23a"/>
-<circle cx="28" cy="40" r="16" fill="#f4ecdb"/>
-<path d="M28 24v32M14 33l28 14M42 33L14 47" stroke="#ef5a2b" stroke-width="2.4"/>
-<circle cx="28" cy="40" r="16" fill="none" stroke="#13293d" stroke-width="2"/>
-</svg>
 """
 
 
@@ -471,11 +464,9 @@ def main():
         f.write(html)
     with open(os.path.join(sch.ROOT, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(MANIFEST, f, ensure_ascii=False, indent=2)
-    with open(os.path.join(sch.ROOT, "favicon.svg"), "w", encoding="utf-8") as f:
-        f.write(FAVICON)
     with open(os.path.join(sch.ROOT, "sw.js"), "w", encoding="utf-8") as f:
         f.write(SERVICE_WORKER)
-    print(f"index.html ({len(matches)} matcher), manifest.json, favicon.svg, sw.js — källa: {meta.get('source')}")
+    print(f"index.html ({len(matches)} matcher), manifest.json, sw.js — källa: {meta.get('source')}")
 
 
 if __name__ == "__main__":
