@@ -121,6 +121,29 @@ h1 .em{color:var(--sun)}
 .tab[aria-pressed=true]{background:var(--ink); color:#fff}
 .tab[hidden]{display:none}
 
+/* tabeller */
+.gtable{background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  padding:10px 12px 6px; margin:14px 0; box-shadow:var(--shadow)}
+.gtitle{display:flex; align-items:baseline; gap:8px; margin:2px 2px 8px}
+.gtitle .gcls{font-size:.64rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft)}
+.gtitle .gname{font-family:"Anton"; text-transform:uppercase; font-size:1rem; letter-spacing:.02em}
+table.gt{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums}
+.gt th,.gt td{padding:7px 4px; font-size:.82rem; text-align:center}
+.gt th{font-size:.6rem; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); font-weight:800; border-bottom:2px solid var(--line)}
+.gt th.lt,.gt td.lt{text-align:left}
+.gt td{border-bottom:1px solid var(--line)}
+.gt .pos{color:var(--ink-soft); font-weight:800; width:26px}
+.gt .nm{font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px}
+.gt .pts{font-family:"Anton"; font-size:1rem}
+.gt tr.me td{background:var(--mecol,rgba(20,40,60,.10))}
+.gt tr.me .pos{color:var(--meink,var(--ink))}
+.tier-row td{padding:4px; border:none}
+.tier-row .bar{display:flex; align-items:center; gap:8px; font-size:.6rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase}
+.tier-row .bar::before,.tier-row .bar::after{content:""; flex:1; height:2px; border-radius:2px; background:currentColor; opacity:.5}
+.tierA{color:#c79114} .tierB{color:var(--sea)} .tierC{color:#9a8f86}
+.empty-tab{padding:24px 4px; color:var(--ink-soft); text-align:center; font-weight:600}
+
 /* filter */
 .filters{position:sticky; top:0; z-index:5; margin:0 -16px; padding:12px 16px;
   display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
@@ -295,7 +318,7 @@ function pill(id, label, color, sun){
   b.setAttribute("aria-pressed", id === filter);
   b.dataset.id = id;
   b.innerHTML = (color ? `<span class="d" style="background:${color}"></span>` : "") + label;
-  b.onclick = () => { filter = id; saveFilter(id); render(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
+  b.onclick = () => { filter = id; saveFilter(id); render(); if(view==="tabeller") renderTables(); if(view==="slutspel") renderBracket(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
   return b;
 }
 fwrap.appendChild(pill("all","Alla",null,true));
@@ -397,7 +420,44 @@ function setView(v){
   if(v==="slutspel") renderBracket();
 }
 tabsWrap.addEventListener("click", e=>{ const b=e.target.closest(".tab"); if(b) setView(b.dataset.view); });
-function renderTables(){ /* Task 8 */ }
+function tierClass(name){ return name && name[0]==="A" ? "tierA" : name && name[0]==="B" ? "tierB" : "tierC"; }
+function teamColorForGroup(g){
+  const me = g.rows.find(r=>r.is_alingsas);
+  if(me){ const t = TEAMS.find(t=>t.id===me.team_id); if(t) return t.color; }
+  return "13293d";
+}
+function hexA(hex,a){ const n=parseInt(hex,16); const r=(n>>16)&255,g=(n>>8)&255,b=n&255; return `rgba(${r},${g},${b},${a})`; }
+function groupsForFilter(){
+  const gs = STANDINGS.groups;
+  if(filter==="all") return gs;
+  if(filter==="P15"||filter==="F15") return gs.filter(g=>g.klass===filter);
+  const team = TEAMS.find(t=>t.slug===filter);
+  if(!team) return gs;
+  return gs.filter(g=>g.rows.some(r=>r.is_alingsas && r.team_id===team.id));
+}
+function renderTables(){
+  if(!STANDINGS || !STANDINGS.groups){ elTables.innerHTML=""; return; }
+  const groups = groupsForFilter();
+  if(!groups.length){ elTables.innerHTML='<div class="empty-tab">Inga tabeller för det här filtret.</div>'; return; }
+  let html="";
+  for(const g of groups){
+    const meColor = teamColorForGroup(g);
+    html += `<div class="gtable"><div class="gtitle"><span class="gcls">${esc(g.klass==="P15"?"Pojkar 15":"Flickor 15")}</span><span class="gname">${esc(g.name)}</span></div>`;
+    html += `<table class="gt"><thead><tr><th>#</th><th class="lt">Lag</th><th>S</th><th>±M</th><th>P</th></tr></thead><tbody>`;
+    let lastTier=null;
+    for(const r of g.rows){
+      if(r.tier && r.tier!==lastTier && r.pos!==1){
+        html += `<tr class="tier-row"><td colspan="5"><div class="bar ${tierClass(r.tier)}">${esc(r.tier)} ↓</div></td></tr>`;
+      }
+      if(r.tier) lastTier=r.tier;
+      const me = r.is_alingsas ? ` class="me" style="--mecol:${hexA(meColor,.16)};--meink:#${meColor}"` : "";
+      const diff = (r.diff>0?"+":"") + r.diff;
+      html += `<tr${me}><td class="pos">${r.pos}</td><td class="lt nm">${esc(r.name)}</td><td>${r.played}</td><td>${esc(diff)}</td><td class="pts">${r.points}</td></tr>`;
+    }
+    html += `</tbody></table></div>`;
+  }
+  elTables.innerHTML = html;
+}
 function renderBracket(){ /* Task 9 */ }
 
 render();
@@ -512,7 +572,7 @@ def js_matches(matches):
 def main():
     matches, meta = sch.load_matches()
     teams_js = [{"lag": t["lag"], "slug": t["slug"], "klass": md.short_klass(t["klass"]),
-                 "color": md.team_colors[t["lag"]]} for t in md.teams]
+                 "id": t["id"], "color": md.team_colors[t["lag"]]} for t in md.teams]
     html = (TEMPLATE
             .replace("__DATA__", json.dumps(js_matches(matches), ensure_ascii=False))
             .replace("__TEAMS__", json.dumps(teams_js, ensure_ascii=False))

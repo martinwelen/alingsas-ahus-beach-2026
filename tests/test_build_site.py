@@ -25,3 +25,10 @@ def test_standings_data_injected():
     # standings.json finns (skapad i Task 6) → datan ska bäddas in
     assert "__STANDINGS__" not in html  # platshållaren ska vara ersatt
     assert "STANDINGS =" in html
+
+
+def test_tables_render_function_uses_filter_and_tiers():
+    html = _build()
+    assert "function renderTables()" in html
+    assert "tier-row" in html          # CSS-klass för A/B/C-avdelarrad
+    assert "groupsForFilter" in html   # hjälpare som väljer grupper enligt filter
