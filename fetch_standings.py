@@ -106,3 +106,19 @@ def bracket_match(m, store, alingsas_ids):
         "away": actor(away),
         "winner": side,
     }
+
+
+def group_rounds(matches):
+    """Grupperar normaliserade matcher per rond, ordnade efter rondens första start.
+    Matcher inom en rond sorteras på (start, id)."""
+    by_round = {}
+    for m in matches:
+        by_round.setdefault(m["round"], []).append(m)
+    rounds = []
+    for name, ms in by_round.items():
+        ms.sort(key=lambda x: (x.get("start") or 0, x.get("id") or 0))
+        rounds.append({"name": name, "matches": ms, "_first": ms[0].get("start") or 0})
+    rounds.sort(key=lambda r: r["_first"])
+    for r in rounds:
+        del r["_first"]
+    return rounds

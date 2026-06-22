@@ -152,3 +152,27 @@ def test_bracket_match_placeholder_unplayed():
     assert m["home"]["is_alingsas"] is False
     assert m["home"]["goals"] is None
     assert m["winner"] is None
+
+
+def test_group_rounds_orders_by_first_start():
+    matches = [
+        {"round": "Final", "start": 400, "id": 4},
+        {"round": "Åttondelar", "start": 100, "id": 1},
+        {"round": "Åttondelar", "start": 100, "id": 2},
+        {"round": "Semifinal", "start": 300, "id": 3},
+        {"round": "Kvartsfinal", "start": 200, "id": 5},
+    ]
+    rounds = fs.group_rounds(matches)
+    assert [r["name"] for r in rounds] == ["Åttondelar", "Kvartsfinal", "Semifinal", "Final"]
+    assert [m["id"] for m in rounds[0]["matches"]] == [1, 2]
+    assert len(rounds) == 4
+
+
+def test_group_rounds_sorts_matches_within_round_by_start_then_id():
+    matches = [
+        {"round": "Åttondelar", "start": 100, "id": 9},
+        {"round": "Åttondelar", "start": 100, "id": 2},
+        {"round": "Åttondelar", "start": 50, "id": 7},
+    ]
+    rounds = fs.group_rounds(matches)
+    assert [m["id"] for m in rounds[0]["matches"]] == [7, 2, 9]
