@@ -16,7 +16,7 @@ köra något manuellt.
 
 | Del | Beskrivning |
 |-----|-------------|
-| **Live-schemasida** (`index.html`) | Alla matcher i tidsordning, filter per lag (sparas), "härnäst"-nedräkning, "pågår nu", installerbar som app (PWA) med AHK-ikon, fungerar offline. |
+| **Live-schemasida** (`index.html`) | Tre flikar: **Schema** (alla matcher i tidsordning med slutresultat på spelade, filter per lag, "härnäst"-nedräkning, "pågår nu"), **Tabeller** (grupptabeller med A/B/C-slutspelsgräns) och **Slutspel** (klassiskt träd A/B/C, dra-med-finger). Installerbar som app (PWA) med AHK-ikon, fungerar offline. |
 | **7 kalendrar** (`ics/`) | En per lag + en samlad. Prenumereras på (auto-uppdateras hos prenumeranten). |
 | **Excel** (`Alingsas_HK_Ahus_Beach_2026.xlsx`) | Alla matcher + ett blad per lag. |
 | **Besöksstatistik** | Cloudflare Web Analytics (cookielöst, ingen samtyckesruta). |
@@ -31,18 +31,19 @@ lottats in i dem (se nedan).
 
 ```
 cupmanager (publikt API)
-        │  fetch_matches.py  (filtrerar på de 6 lagens id)
+        │  fetch_matches.py  (filtrerar på de 6 lagens id, inkl. resultat)
         ▼
-   matches.json            ← enda aktuella datakällan (skrivs bara vid ändring)
+   matches.json            ← enda aktuella matchkällan (skrivs bara vid ändring)
         │  schedule.py      (gemensam laddare: matches.json annars seed)
         ├──────────────► build_site.py  → index.html, manifest.json, sw.js
         ├──────────────► build_ics.py   → ics/*.ics  (7 st)
         └──────────────► build_excel.py → .xlsx
-        ▲
-   matches_data.py          ← seed/fallback + metadata (lag, id, färger, konstanter)
+        ▲                        ▲
+   matches_data.py               │  standings.json  ← grupptabeller + slutspelsträd
+   (seed/fallback + metadata)    │  fetch_standings.py (Division$table + Playoff)
 
 .github/workflows/update.yml  → kör allt ovan i molnet (cron + manuellt),
-                                committar bara när matchdatan ändrats
+                                committar bara när match- eller standings-datan ändrats
 ```
 
 ### Filer
@@ -50,9 +51,10 @@ cupmanager (publikt API)
 | Fil | Roll |
 |-----|------|
 | `matches_data.py` | Lagmetadata (namn, slug, **cupmanager-id**, färg, grupp, klass), turnerings-id, konstanter (matchtid, tidszon, Pages-URL) **+ statisk seed-lista** som fallback. |
-| `fetch_matches.py` | Hämtar matcher via cupmanagers API, filtrerar på lag-id, skriver `matches.json`. Skriver bara om datan ändrats (hash); lämnar filen orörd vid fel. |
+| `fetch_matches.py` | Hämtar matcher (inkl. slutresultat) via cupmanagers API, filtrerar på lag-id, skriver `matches.json`. Skriver bara om datan ändrats (hash); lämnar filen orörd vid fel. |
+| `fetch_standings.py` | Hämtar de sex gruppernas tabeller och A/B/C-slutspelsträd, skriver `standings.json`. **Speglar cupmanagers tabellordning** (ingen egen tie-break-logik); skriver bara vid ändring. |
 | `schedule.py` | Laddar `matches.json` (annars seed) och normaliserar alla matcher till samma form. |
-| `build_site.py` | Genererar `index.html` (+ `manifest.json`, `sw.js`). All HTML/CSS/JS finns här. |
+| `build_site.py` | Genererar `index.html` (+ `manifest.json`, `sw.js`) med flikarna Schema/Tabeller/Slutspel. Läser `standings.json` om den finns (annars döljs de två extra flikarna). All HTML/CSS/JS finns här. |
 | `build_ics.py` | Genererar de 7 `.ics`-filerna. Stabila UID per match; `SEQUENCE` = ändringstid. |
 | `build_excel.py` | Genererar Excel-dokumentet. |
 | `make_icons.py` | Rasteriserar `Alingsas_HK_logo.svg` → app-/favicon-PNG (körs lokalt vid behov; ikoner är statiska). |
@@ -87,10 +89,12 @@ inget handpåläggande.
 ```bash
 pip install openpyxl                 # för Excel
 python fetch_matches.py             # uppdaterar matches.json från cupmanager (~1–2 min)
+python fetch_standings.py           # uppdaterar standings.json (tabeller + slutspel)
 python build_ics.py && python build_excel.py && python build_site.py
 ```
 
 Utan `matches.json` används den statiska seed-listan i `matches_data.py`.
+Utan `standings.json` byggs sidan ändå – flikarna Tabeller/Slutspel döljs bara.
 
 Regenerera ikonerna (sällan; kräver cairosvg + Pillow):
 ```bash

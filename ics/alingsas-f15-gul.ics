@@ -11,7 +11,7 @@ REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
 BEGIN:VEVENT
 UID:f15-gul-vs-hoors-hk-h-65-1-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260717T124500Z
 DTEND:20260717T125600Z
 SUMMARY:F15 Gul: Höörs HK H 65 1 – Alingsås HK Gul
@@ -19,14 +19,14 @@ LOCATION:Bana 9\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   bortalag mot Höörs HK H 65 1.\nAvspark 14:45 (lokal tid). Matchtid 2×5
   min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-h43-lund-hf-2-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260717T144500Z
 DTEND:20260717T145600Z
 SUMMARY:F15 Gul: Alingsås HK Gul – H43 Lund HF 2
@@ -34,14 +34,14 @@ LOCATION:Bana 8\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   hemmalag mot H43 Lund HF 2.\nAvspark 16:45 (lokal tid). Matchtid 2×5 min
   + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-lugi-hf-3-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260717T161500Z
 DTEND:20260717T162600Z
 SUMMARY:F15 Gul: Alingsås HK Gul – Lugi HF 3
@@ -49,14 +49,14 @@ LOCATION:Bana 17\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   hemmalag mot Lugi HF 3.\nAvspark 18:15 (lokal tid). Matchtid 2×5 min + 6
  0 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-ifk-bankeryd-vit-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260717T181500Z
 DTEND:20260717T182600Z
 SUMMARY:F15 Gul: Alingsås HK Gul – IFK Bankeryd Vit
@@ -64,14 +64,14 @@ LOCATION:Bana 8\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   hemmalag mot IFK Bankeryd Vit.\nAvspark 20:15 (lokal tid). Matchtid 2×5 
  min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-ifk-kristianstad-1-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260718T083000Z
 DTEND:20260718T084100Z
 SUMMARY:F15 Gul: IFK Kristianstad 1 – Alingsås HK Gul
@@ -79,14 +79,14 @@ LOCATION:Bana 1\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   bortalag mot IFK Kristianstad 1.\nAvspark 10:30 (lokal tid). Matchtid 2×
  5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-ifk-malmo-hf-vit-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260718T093000Z
 DTEND:20260718T094100Z
 SUMMARY:F15 Gul: IFK Malmö HF Vit – Alingsås HK Gul
@@ -94,14 +94,14 @@ LOCATION:Bana 10\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   bortalag mot IFK Malmö HF Vit.\nAvspark 11:30 (lokal tid). Matchtid 2×5
   min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-onnereds-hk-1-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260718T104500Z
 DTEND:20260718T105600Z
 SUMMARY:F15 Gul: Önnereds HK 1 – Alingsås HK Gul
@@ -109,14 +109,14 @@ LOCATION:Bana 8\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   bortalag mot Önnereds HK 1.\nAvspark 12:45 (lokal tid). Matchtid 2×5 mi
  n + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:f15-gul-vs-ifk-tumba-hk-vit-grupp-3@ahusbeach2026.cupmanager.net
-DTSTAMP:20260621T204825Z
+DTSTAMP:20260622T144314Z
 DTSTART:20260718T120000Z
 DTEND:20260718T121100Z
 SUMMARY:F15 Gul: IFK Tumba HK Vit – Alingsås HK Gul
@@ -124,8 +124,8 @@ LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 3\nAlingsås spelar
   bortalag mot IFK Tumba HK Vit.\nAvspark 14:00 (lokal tid). Matchtid 2×5 
  min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1782074905
-LAST-MODIFIED:20260621T204825Z
+SEQUENCE:1782139394
+LAST-MODIFIED:20260622T144314Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
