@@ -85,3 +85,70 @@ def test_is_descending_points_true():
 
 def test_is_descending_points_false():
     assert fs.is_descending_points([{"points": 3}, {"points": 6}]) is False
+
+
+def _playoff_store():
+    """Syntetisk store för en spelad slutspelsmatch (hemmavinst 15-12)."""
+    return {
+        "Match({id:900})": {
+            "__typename": "Match", "id": 900, "start": 1784741400000,
+            "home": {"href": "MatchActor({actor:\"home\",id:900})"},
+            "away": {"href": "MatchActor({actor:\"away\",id:900})"},
+            "arena": {"href": "Arena({id:11})"},
+            "round": {"href": "Round({id:5})"},
+            "result": {"href": "MatchResult({id:900})"},
+        },
+        "MatchActor({actor:\"home\",id:900})": {
+            "__typename": "MatchActor", "name": {"sv": "Alingsås HK VIT"},
+            "team": {"href": "Team({id:74904168})"}},
+        "MatchActor({actor:\"away\",id:900})": {
+            "__typename": "MatchActor", "name": {"sv": "Lugi HF 2"},
+            "team": {"href": "Team({id:77344845})"}},
+        "Arena({id:11})": {"__typename": "Arena", "fieldName": "Bana 11"},
+        "Round({id:5})": {"__typename": "Round", "name": {"sv": "Kvartsfinal"}},
+        "MatchResult({id:900})": {
+            "__typename": "MatchResult", "finished": True,
+            "homeGoals": 15, "awayGoals": 12},
+    }
+
+
+def test_bracket_match_finished_home_win():
+    store = _playoff_store()
+    m = fs.bracket_match(store["Match({id:900})"], store, alingsas_ids={74904168})
+    assert m["id"] == 900
+    assert m["bana"] == 11
+    assert m["round"] == "Kvartsfinal"
+    assert m["home"]["label"] == "Alingsås HK VIT"
+    assert m["home"]["is_alingsas"] is True
+    assert m["home"]["goals"] == 15
+    assert m["away"]["label"] == "Lugi HF 2"
+    assert m["away"]["goals"] == 12
+    assert m["winner"] == "home"
+
+
+def test_bracket_match_placeholder_unplayed():
+    """Oavgjord seedmatch: platshållarnamn, inga mål, ingen vinnare."""
+    store = {
+        "Match({id:901})": {
+            "__typename": "Match", "id": 901, "start": 1784741400000,
+            "home": {"href": "MatchActor({actor:\"home\",id:901})"},
+            "away": {"href": "MatchActor({actor:\"away\",id:901})"},
+            "arena": {"href": "Arena({id:12})"},
+            "round": {"href": "Round({id:6})"},
+            "result": {"href": "MatchResult({id:901})"},
+        },
+        "MatchActor({actor:\"home\",id:901})": {
+            "__typename": "MatchActor", "name": {"sv": "1:an i Grupp 1"}, "team": None},
+        "MatchActor({actor:\"away\",id:901})": {
+            "__typename": "MatchActor", "name": {"sv": "4:an i Grupp 3"}, "team": None},
+        "Arena({id:12})": {"__typename": "Arena", "fieldName": "Bana 12"},
+        "Round({id:6})": {"__typename": "Round", "name": {"sv": "Åttondelar"}},
+        "MatchResult({id:901})": {"__typename": "MatchResult", "finished": False,
+                                  "homeGoals": 0, "awayGoals": 0},
+    }
+    m = fs.bracket_match(store["Match({id:901})"], store, alingsas_ids={74904168})
+    assert m["home"]["label"] == "1:an i Grupp 1"
+    assert m["home"]["team_id"] is None
+    assert m["home"]["is_alingsas"] is False
+    assert m["home"]["goals"] is None
+    assert m["winner"] is None

@@ -70,3 +70,39 @@ def is_descending_points(rows):
     """Skyddsräcke: API:ts ordning ska vara icke-växande i poäng."""
     pts = [r.get("points", 0) for r in rows]
     return all(pts[i] >= pts[i + 1] for i in range(len(pts) - 1))
+
+
+def _get(store, ref):
+    return store.get(ref.get("href")) if isinstance(ref, dict) else None
+
+
+def bracket_match(m, store, alingsas_ids):
+    """Normaliserar en slutspelsmatch (Match-entitet + store) till vår modell."""
+    home = _get(store, m.get("home")) or {}
+    away = _get(store, m.get("away")) or {}
+    arena = _get(store, m.get("arena")) or {}
+    rnd = _get(store, m.get("round")) or {}
+    result = _get(store, m.get("result")) or {}
+    side = winner_side(result)
+
+    def actor(a):
+        tid = fmx.ref_id(a.get("team")) if isinstance(a.get("team"), dict) else None
+        goals = None
+        if result.get("finished"):
+            goals = result.get("homeGoals") if a is home else result.get("awayGoals")
+        return {
+            "label": fmx.name_of(a),
+            "team_id": tid,
+            "is_alingsas": tid in alingsas_ids if tid else False,
+            "goals": goals,
+        }
+
+    return {
+        "id": m.get("id"),
+        "start": m.get("start"),
+        "bana": fmx.bana_num(arena.get("fieldName", "")),
+        "round": fmx.name_of(rnd),
+        "home": actor(home),
+        "away": actor(away),
+        "winner": side,
+    }
