@@ -41,3 +41,20 @@ def test_bracket_render_present():
     assert "pointerdown" in html        # dra-med-finger
     assert "bm-win" in html             # vinnar-accentklass
     assert "bm-lose" in html            # förlorar-strike-through-klass
+
+
+def test_graceful_without_standings():
+    """Utan standings.json ska sidan byggas och Tabeller/Slutspel-flikarna döljas."""
+    src = os.path.join(ROOT, "standings.json")
+    bak = src + ".bak"
+    had = os.path.exists(src)
+    if had:
+        os.rename(src, bak)
+    try:
+        html = _build()
+        assert 'id="tab-schema"' in html          # schemat finns alltid
+        assert "STANDINGS = null" in html         # ingen data injicerad
+        assert 'id="tab-tabeller"' in html        # markup finns men startar hidden
+    finally:
+        if had:
+            os.rename(bak, src)
