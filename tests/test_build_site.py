@@ -32,3 +32,12 @@ def test_tables_render_function_uses_filter_and_tiers():
     assert "function renderTables()" in html
     assert "tier-row" in html          # CSS-klass för A/B/C-avdelarrad
     assert "groupsForFilter" in html   # hjälpare som väljer grupper enligt filter
+
+
+def test_bracket_render_present():
+    html = _build()
+    assert "function renderBracket()" in html
+    assert "bracket-scroll" in html     # pan-container
+    assert "pointerdown" in html        # dra-med-finger
+    assert "bm-win" in html             # vinnar-accentklass
+    assert "bm-lose" in html            # förlorar-strike-through-klass
