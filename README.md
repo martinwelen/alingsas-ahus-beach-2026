@@ -60,6 +60,7 @@ cupmanager (publikt API)
 | `make_icons.py` | Rasteriserar `Alingsas_HK_logo.svg` → app-/favicon-PNG (körs lokalt vid behov; ikoner är statiska). |
 | `Alingsas_HK_logo.svg` | Klubblogga (källa för ikonerna + favicon). |
 | `.github/workflows/update.yml` | Molnroboten (cron + manuell körning). |
+| `.nojekyll` | Tom fil som stänger av Jekyll på GitHub Pages – sidan serveras som ren statisk HTML. **Får inte tas bort** (se Felsökning). |
 
 ---
 
@@ -118,6 +119,19 @@ pip install cairosvg Pillow && python make_icons.py
 - **Turnerings-id:** `70944382`
 - **Lagens id:** P15 Blå `74904162`, P15 Orange `76280580`, P15 Vit `74904168`,
   F15 Blå `74294026`, F15 Gul `76514811`, F15 Vit `74294028`.
+
+### Felsökning
+
+- **Pages-deployen misslyckas / sidan uppdateras inte:** GitHub Pages kör som
+  standard Jekyll, som försöker tolka `{{ ... }}` i *alla* filer (inkl. markdown
+  i `docs/`) som Liquid-mallar och **kraschar hela bygget** om syntaxen inte går
+  ihop (t.ex. cupmanager-query-syntax i plan-dokumenten). `.nojekyll` i roten
+  stänger av Jekyll helt – ta inte bort den. Kontrollera deploy-status med
+  `gh run list --workflow "pages-build-deployment"`.
+- **Du ser en gammal version i webbläsaren:** service workern (`sw.js`) cachar för
+  offline-läge (nätverk-först, så en vanlig omladdning ska ge färskt). Tvinga fram
+  färskt med hård omladdning (**Ctrl+Shift+R**); installerad som app – stäng och
+  öppna igen.
 
 ---
 
