@@ -398,6 +398,9 @@ document.getElementById("sheetx").addEventListener("click", ()=> sheet.hidden = 
 sheet.addEventListener("click", e=>{ if(e.target === sheet) sheet.hidden = true; });
 window.addEventListener("appinstalled", ()=>{ installBtn.hidden = true; sheet.hidden = true; });
 </script>
+<!-- Cloudflare Web Analytics (cookielöst, ingen samtyckesruta) -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+  data-cf-beacon='{"token": "0fbaddb77cfe4155af4e4bdb370de308"}'></script>
 </body>
 </html>
 """
