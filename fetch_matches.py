@@ -28,7 +28,7 @@ API = ("https://ahusbeachhandboll.cupmanager.net/rest/results_api/call"
        "?call={call}&lang=sv&tournamentId=" + md.TOURNAMENT_ID)
 QUERY = ("MatchWindow({{limit:{limit},offset:{offset},tournamentId:" + md.TOURNAMENT_ID + "}})"
          "{{matches:[{{... on Match:{{arena:{{}},away:{{team:{{}}}},"
-         "division:{{category:{{}},name:{{}}}},home:{{team:{{}}}}}}}}]}}")
+         "division:{{category:{{}},name:{{}}}},home:{{team:{{}}}},result:{{}}}}}}]}}")
 PAGE = 300
 
 
@@ -89,6 +89,16 @@ def bana_num(field):
     return int(m.group(1)) if m else (field or "")
 
 
+def extract_result(res):
+    """Returnerar {'hg','ag'} för en avgjord match, annars None."""
+    if not res or not res.get("finished"):
+        return None
+    hg, ag = res.get("homeGoals"), res.get("awayGoals")
+    if hg is None or ag is None:
+        return None
+    return {"hg": hg, "ag": ag}
+
+
 def build_matches(store):
     def get(ref):
         return store.get(ref.get("href") if isinstance(ref, dict) else ref, {})
@@ -108,17 +118,19 @@ def build_matches(store):
         bana = bana_num(get(e.get("arena", {})).get("fieldName", ""))
         hb = "Hemma" if hid in sch.TEAM_BY_ID else "Borta"
         dt = sch.parts_from_ms(e["start"])
+        result = extract_result(get(e.get("result", {})))
         rows.append(sch.make_match(
             datum=f"{dt.year:04d}-{dt.month:02d}-{dt.day:02d}",
             tid=f"{dt.hour:02d}:{dt.minute:02d}",
             bana=bana, lag=team["lag"], slug=team["slug"], klass=klass,
-            grupp=grupp, hemma=name_of(home_a), borta=name_of(away_a), hb=hb))
+            grupp=grupp, hemma=name_of(home_a), borta=name_of(away_a), hb=hb,
+            result=result))
     rows.sort(key=lambda m: (m["start_ms"], str(m["bana"])))
     return rows
 
 
 def data_hash(rows):
-    key = [(m["slug"], m["start_ms"], m["bana"], m["hemma"], m["borta"], m["grupp"])
+    key = [(m["slug"], m["start_ms"], m["bana"], m["hemma"], m["borta"], m["grupp"], m.get("result"))
            for m in rows]
     return hashlib.sha256(json.dumps(key, ensure_ascii=False).encode()).hexdigest()
 
