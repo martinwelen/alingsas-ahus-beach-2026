@@ -17,6 +17,19 @@ import matches_data as md
 import schedule as sch
 
 DUR_MIN = md.MATCH_DURATION_MIN
+
+STANDINGS_JSON = os.path.join(sch.ROOT, "standings.json")
+
+
+def load_standings():
+    """Läser standings.json om den finns, annars None (vyer döljs graciöst)."""
+    if os.path.exists(STANDINGS_JSON):
+        try:
+            with open(STANDINGS_JSON, encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print("VARNING: kunde inte läsa standings.json:", e)
+    return None
 SV_MONTHS = sch.SV_MONTHS
 
 
@@ -99,6 +112,14 @@ h1 .em{color:var(--sun)}
 .dates{color:var(--ink-soft); font-weight:600; font-size:.96rem}
 .sea-rule{height:5px; border-radius:5px; margin:14px 0 0;
   background:linear-gradient(90deg,var(--sea),var(--sun-2),var(--sun))}
+
+/* vy-flikar */
+.tabs{display:flex; gap:8px; margin:14px 0 2px}
+.tab{flex:0 0 auto; border:1.5px solid var(--ink); background:transparent; color:var(--ink);
+  padding:8px 16px; border-radius:999px; font-weight:800; font-size:.9rem; cursor:pointer;
+  font-family:inherit; transition:all .15s}
+.tab[aria-pressed=true]{background:var(--ink); color:#fff}
+.tab[hidden]{display:none}
 
 /* filter */
 .filters{position:sticky; top:0; z-index:5; margin:0 -16px; padding:12px 16px;
@@ -203,10 +224,19 @@ footer a{color:var(--sea)}
     <div class="sea-rule"></div>
   </header>
 
+  <nav class="tabs" id="tabs" aria-label="Vyer">
+    <button class="tab" id="tab-schema" data-view="schema" aria-pressed="true">Schema</button>
+    <button class="tab" id="tab-tabeller" data-view="tabeller" aria-pressed="false" hidden>Tabeller</button>
+    <button class="tab" id="tab-slutspel" data-view="slutspel" aria-pressed="false" hidden>Slutspel</button>
+  </nav>
+
   <nav class="filters" id="filters" aria-label="Filtrera lag"></nav>
 
   <section id="hero"></section>
   <main id="list"></main>
+
+  <section id="tables" hidden></section>
+  <section id="bracket" hidden></section>
 
   <details class="cal">
     <summary>Lägg till i din kalender (valfritt)</summary>
@@ -238,6 +268,8 @@ __CAL_ITEMS__
 const MATCHES = __DATA__;
 const TEAMS = __TEAMS__;
 const DUR = __DUR_MIN__ * 60000;
+const STANDINGS = __STANDINGS__;
+let view = "schema";
 let filter = "all";
 
 // kom ihåg valt filter (localStorage) + spegla i URL:en (delbar länk)
@@ -343,6 +375,31 @@ function render(){
 setInterval(()=>{ const cd=document.querySelector(".hero .cd"); if(cd&&cd.dataset.ms){
   const left=+cd.dataset.ms-Date.now(); cd.textContent = left>0?fmtCountdown(left):"Spelas nu"; }}, 1000);
 setInterval(render, 30000);
+
+// vy-flikar: visa Tabeller/Slutspel bara om data finns
+const tabsWrap = document.getElementById("tabs");
+const elTables = document.getElementById("tables");
+const elBracket = document.getElementById("bracket");
+const elList = document.getElementById("list");
+const elHero = document.getElementById("hero");
+if(STANDINGS && STANDINGS.groups && STANDINGS.groups.length){
+  document.getElementById("tab-tabeller").hidden = false;
+  if(STANDINGS.playoffs && STANDINGS.playoffs.length) document.getElementById("tab-slutspel").hidden = false;
+}
+function setView(v){
+  view = v;
+  for(const t of tabsWrap.children) t.setAttribute("aria-pressed", t.dataset.view===v);
+  const schema = v==="schema";
+  elHero.hidden = !schema; elList.hidden = !schema;
+  elTables.hidden = v!=="tabeller";
+  elBracket.hidden = v!=="slutspel";
+  if(v==="tabeller") renderTables();
+  if(v==="slutspel") renderBracket();
+}
+tabsWrap.addEventListener("click", e=>{ const b=e.target.closest(".tab"); if(b) setView(b.dataset.view); });
+function renderTables(){ /* Task 8 */ }
+function renderBracket(){ /* Task 9 */ }
+
 render();
 
 // kopiera-knappar
@@ -460,6 +517,7 @@ def main():
             .replace("__DATA__", json.dumps(js_matches(matches), ensure_ascii=False))
             .replace("__TEAMS__", json.dumps(teams_js, ensure_ascii=False))
             .replace("__DUR_MIN__", str(DUR_MIN))
+            .replace("__STANDINGS__", json.dumps(load_standings(), ensure_ascii=False))
             .replace("__CAL_ITEMS__", cal_section())
             .replace("__BASE__", md.PAGES_BASE)
             .replace("__UPDATED__", human_updated(meta)))
