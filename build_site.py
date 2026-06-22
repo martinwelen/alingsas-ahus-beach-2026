@@ -209,6 +209,11 @@ table.gt{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums
 .vs{font-weight:600; font-size:.98rem}
 .vs .ali{font-weight:800}
 .vs .ali::after{content:""}
+.score{display:inline-flex; gap:5px; align-items:baseline; font-family:"Anton"; font-size:1.05rem; margin-top:2px}
+.score .x{color:var(--ink-soft); font-size:.8rem}
+.score b{font-weight:400}
+.score .w{color:var(--sun)}
+.score .l{color:var(--ink-soft)}
 .bana{text-align:center; min-width:46px}
 .bana b{font-family:"Anton",sans-serif; font-size:1.3rem; display:block; line-height:1}
 .bana small{font-size:.6rem; font-weight:800; letter-spacing:.1em; color:var(--ink-soft)}
@@ -399,6 +404,7 @@ function render(){
           <div class="chips"><span class="lagchip" style="background:#${m.color}">${esc(m.lag)}</span>
             <span class="grp">${esc(m.grp)}</span></div>
           <div class="vs"><span class="${homeAli?"ali":""}">${esc(m.home)}</span> – <span class="${homeAli?"":"ali"}">${esc(m.away)}</span></div>
+          ${m.res ? `<div class="score"><b class="${m.res.hg>m.res.ag?'w':m.res.hg<m.res.ag?'l':''}">${m.res.hg}</b><span class="x">–</span><b class="${m.res.ag>m.res.hg?'w':m.res.ag<m.res.hg?'l':''}">${m.res.ag}</b></div>` : ""}
         </div>
         <div class="bana"><small>BANA</small><b>${esc(m.bana)}</b></div>
       </article>`;
@@ -639,6 +645,7 @@ def js_matches(matches):
             "lag": m["lag"], "slug": m["slug"], "klass": m["klass"],
             "grp": m["grupp"], "home": m["hemma"], "away": m["borta"],
             "hb": m["hb"], "day": m["day_label"], "color": m["color"],
+            "res": m.get("result"),
         })
     out.sort(key=lambda x: x["ms"])
     return out

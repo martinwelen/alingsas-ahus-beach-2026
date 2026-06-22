@@ -43,6 +43,12 @@ def test_bracket_render_present():
     assert "bm-lose" in html            # förlorar-strike-through-klass
 
 
+def test_schedule_renders_score_markup():
+    html = _build()
+    assert '"res"' in html or "m.res" in html   # resultatfält propageras till JS
+    assert "score" in html                       # score-rendering finns
+
+
 def test_graceful_without_standings():
     """Utan standings.json ska sidan byggas och Tabeller/Slutspel-flikarna döljas."""
     src = os.path.join(ROOT, "standings.json")
