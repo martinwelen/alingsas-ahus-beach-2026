@@ -40,7 +40,7 @@ def parts_from_ms(ms):
     return dt
 
 
-def make_match(datum, tid, bana, lag, slug, klass, grupp, hemma, borta, hb):
+def make_match(datum, tid, bana, lag, slug, klass, grupp, hemma, borta, hb, result=None):
     """Bygger en normaliserad matchdict (med härledda fält)."""
     start_ms = local_to_ms(datum, tid)
     dt = parts_from_ms(start_ms)
@@ -49,6 +49,7 @@ def make_match(datum, tid, bana, lag, slug, klass, grupp, hemma, borta, hb):
         "datum": datum, "dag": SV_DAYS[dt.weekday()], "tid": tid, "bana": bana,
         "lag": lag, "slug": slug, "klass": klass, "grupp": grupp,
         "hemma": hemma, "borta": borta, "mots": mots, "hb": hb,
+        "result": result,
         "color": md.team_colors[lag],
         "start_ms": start_ms,
         "start_iso": dt.isoformat(timespec="minutes"),

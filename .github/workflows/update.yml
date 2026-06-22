@@ -30,12 +30,15 @@ jobs:
       - name: Hämta matcher från cupmanager
         run: python fetch_matches.py
 
-      - name: Avgör om matchdatan ändrats
+      - name: Hämta tabeller & slutspel från cupmanager
+        run: python fetch_standings.py
+
+      - name: Avgör om datan ändrats
         id: changed
         run: |
-          if git diff --quiet -- matches.json; then
+          if git diff --quiet -- matches.json standings.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "matches.json oförändrad – hoppar över bygge/commit."
+            echo "matches.json + standings.json oförändrade – hoppar över bygge/commit."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi

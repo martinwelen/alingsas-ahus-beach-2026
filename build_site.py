@@ -17,6 +17,19 @@ import matches_data as md
 import schedule as sch
 
 DUR_MIN = md.MATCH_DURATION_MIN
+
+STANDINGS_JSON = os.path.join(sch.ROOT, "standings.json")
+
+
+def load_standings():
+    """Läser standings.json om den finns, annars None (vyer döljs graciöst)."""
+    if os.path.exists(STANDINGS_JSON):
+        try:
+            with open(STANDINGS_JSON, encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print("VARNING: kunde inte läsa standings.json:", e)
+    return None
 SV_MONTHS = sch.SV_MONTHS
 
 
@@ -100,6 +113,54 @@ h1 .em{color:var(--sun)}
 .sea-rule{height:5px; border-radius:5px; margin:14px 0 0;
   background:linear-gradient(90deg,var(--sea),var(--sun-2),var(--sun))}
 
+/* vy-flikar */
+.tabs{display:flex; gap:8px; margin:14px 0 2px}
+.tab{flex:0 0 auto; border:1.5px solid var(--ink); background:transparent; color:var(--ink);
+  padding:8px 16px; border-radius:999px; font-weight:800; font-size:.9rem; cursor:pointer;
+  font-family:inherit; transition:all .15s}
+.tab[aria-pressed=true]{background:var(--ink); color:#fff}
+.tab[hidden]{display:none}
+
+/* tabeller */
+.gtable{background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  padding:10px 12px 6px; margin:14px 0; box-shadow:var(--shadow)}
+.gtitle{display:flex; align-items:baseline; gap:8px; margin:2px 2px 8px}
+.gtitle .gcls{font-size:.64rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft)}
+.gtitle .gname{font-family:"Anton"; text-transform:uppercase; font-size:1rem; letter-spacing:.02em}
+table.gt{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums}
+.gt th,.gt td{padding:7px 4px; font-size:.82rem; text-align:center}
+.gt th{font-size:.6rem; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); font-weight:800; border-bottom:2px solid var(--line)}
+.gt th.lt,.gt td.lt{text-align:left}
+.gt td{border-bottom:1px solid var(--line)}
+.gt .pos{color:var(--ink-soft); font-weight:800; width:26px}
+.gt .nm{font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px}
+.gt .pts{font-family:"Anton"; font-size:1rem}
+.gt tr.me td{background:var(--mecol,rgba(20,40,60,.10))}
+.gt tr.me .pos{color:var(--meink,var(--ink))}
+.tier-row td{padding:4px; border:none}
+.tier-row .bar{display:flex; align-items:center; gap:8px; font-size:.6rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase}
+.tier-row .bar::before,.tier-row .bar::after{content:""; flex:1; height:2px; border-radius:2px; background:currentColor; opacity:.5}
+.tierA{color:#c79114} .tierB{color:var(--sea)} .tierC{color:#9a8f86}
+.empty-tab{padding:24px 4px; color:var(--ink-soft); text-align:center; font-weight:600}
+
+/* slutspelsträd */
+.btabs{display:flex; gap:6px; margin:14px 2px 8px}
+.btab{font-size:.72rem; font-weight:800; padding:6px 13px; border-radius:999px; border:1.5px solid var(--line); color:var(--ink-soft); background:transparent; cursor:pointer; font-family:inherit}
+.btab[aria-pressed=true]{background:var(--ink); border-color:var(--ink); color:#fff}
+.bracket-scroll{overflow:hidden; cursor:grab; touch-action:pan-y; border:1px solid var(--line); border-radius:14px; background:var(--paper); box-shadow:var(--shadow); padding:12px}
+.bracket-scroll.drag{cursor:grabbing}
+.btree{display:flex; gap:16px; min-width:max-content; user-select:none}
+.bcol{display:flex; flex-direction:column; justify-content:space-around; gap:10px; min-width:130px}
+.bcol .clabel{font-size:.56rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:2px}
+.bm{background:var(--sand); border:1px solid var(--line); border-radius:9px; padding:6px 8px; font-size:.7rem; line-height:1.5}
+.bm .row{display:flex; justify-content:space-between; gap:8px}
+.bm .row span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.bm.ali{border-color:var(--ink); box-shadow:0 0 0 1.5px var(--c,#999)}
+.bm-win{font-weight:800; color:var(--ink)}
+.bm-lose{text-decoration:line-through; color:var(--ink-soft); opacity:.75}
+.bm .g{font-variant-numeric:tabular-nums; font-weight:800; margin-left:6px}
+
 /* filter */
 .filters{position:sticky; top:0; z-index:5; margin:0 -16px; padding:12px 16px;
   display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
@@ -148,6 +209,11 @@ h1 .em{color:var(--sun)}
 .vs{font-weight:600; font-size:.98rem}
 .vs .ali{font-weight:800}
 .vs .ali::after{content:""}
+.score{display:inline-flex; gap:5px; align-items:baseline; font-family:"Anton"; font-size:1.05rem; margin-top:2px}
+.score .x{color:var(--ink-soft); font-size:.8rem}
+.score b{font-weight:400}
+.score .w{color:var(--sun)}
+.score .l{color:var(--ink-soft)}
 .bana{text-align:center; min-width:46px}
 .bana b{font-family:"Anton",sans-serif; font-size:1.3rem; display:block; line-height:1}
 .bana small{font-size:.6rem; font-weight:800; letter-spacing:.1em; color:var(--ink-soft)}
@@ -203,10 +269,19 @@ footer a{color:var(--sea)}
     <div class="sea-rule"></div>
   </header>
 
+  <nav class="tabs" id="tabs" aria-label="Vyer">
+    <button class="tab" id="tab-schema" data-view="schema" aria-pressed="true">Schema</button>
+    <button class="tab" id="tab-tabeller" data-view="tabeller" aria-pressed="false" hidden>Tabeller</button>
+    <button class="tab" id="tab-slutspel" data-view="slutspel" aria-pressed="false" hidden>Slutspel</button>
+  </nav>
+
   <nav class="filters" id="filters" aria-label="Filtrera lag"></nav>
 
   <section id="hero"></section>
   <main id="list"></main>
+
+  <section id="tables" hidden></section>
+  <section id="bracket" hidden></section>
 
   <details class="cal">
     <summary>Lägg till i din kalender (valfritt)</summary>
@@ -238,6 +313,8 @@ __CAL_ITEMS__
 const MATCHES = __DATA__;
 const TEAMS = __TEAMS__;
 const DUR = __DUR_MIN__ * 60000;
+const STANDINGS = __STANDINGS__;
+let view = "schema";
 let filter = "all";
 
 // kom ihåg valt filter (localStorage) + spegla i URL:en (delbar länk)
@@ -263,7 +340,7 @@ function pill(id, label, color, sun){
   b.setAttribute("aria-pressed", id === filter);
   b.dataset.id = id;
   b.innerHTML = (color ? `<span class="d" style="background:${color}"></span>` : "") + label;
-  b.onclick = () => { filter = id; saveFilter(id); render(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
+  b.onclick = () => { filter = id; saveFilter(id); render(); if(view==="tabeller") renderTables(); if(view==="slutspel") renderBracket(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
   return b;
 }
 fwrap.appendChild(pill("all","Alla",null,true));
@@ -327,6 +404,7 @@ function render(){
           <div class="chips"><span class="lagchip" style="background:#${m.color}">${esc(m.lag)}</span>
             <span class="grp">${esc(m.grp)}</span></div>
           <div class="vs"><span class="${homeAli?"ali":""}">${esc(m.home)}</span> – <span class="${homeAli?"":"ali"}">${esc(m.away)}</span></div>
+          ${m.res ? `<div class="score"><b class="${m.res.hg>m.res.ag?'w':m.res.hg<m.res.ag?'l':''}">${m.res.hg}</b><span class="x">–</span><b class="${m.res.ag>m.res.hg?'w':m.res.ag<m.res.hg?'l':''}">${m.res.ag}</b></div>` : ""}
         </div>
         <div class="bana"><small>BANA</small><b>${esc(m.bana)}</b></div>
       </article>`;
@@ -343,6 +421,126 @@ function render(){
 setInterval(()=>{ const cd=document.querySelector(".hero .cd"); if(cd&&cd.dataset.ms){
   const left=+cd.dataset.ms-Date.now(); cd.textContent = left>0?fmtCountdown(left):"Spelas nu"; }}, 1000);
 setInterval(render, 30000);
+
+// vy-flikar: visa Tabeller/Slutspel bara om data finns
+const tabsWrap = document.getElementById("tabs");
+const elTables = document.getElementById("tables");
+const elBracket = document.getElementById("bracket");
+const elList = document.getElementById("list");
+const elHero = document.getElementById("hero");
+if(STANDINGS && STANDINGS.groups && STANDINGS.groups.length){
+  document.getElementById("tab-tabeller").hidden = false;
+  if(STANDINGS.playoffs && STANDINGS.playoffs.length) document.getElementById("tab-slutspel").hidden = false;
+}
+function setView(v){
+  view = v;
+  for(const t of tabsWrap.children) t.setAttribute("aria-pressed", t.dataset.view===v);
+  const schema = v==="schema";
+  elHero.hidden = !schema; elList.hidden = !schema;
+  elTables.hidden = v!=="tabeller";
+  elBracket.hidden = v!=="slutspel";
+  if(v==="tabeller") renderTables();
+  if(v==="slutspel") renderBracket();
+}
+tabsWrap.addEventListener("click", e=>{ const b=e.target.closest(".tab"); if(b) setView(b.dataset.view); });
+function tierClass(name){ return name && name[0]==="A" ? "tierA" : name && name[0]==="B" ? "tierB" : "tierC"; }
+function teamColorForGroup(g){
+  const me = g.rows.find(r=>r.is_alingsas);
+  if(me){ const t = TEAMS.find(t=>t.id===me.team_id); if(t) return t.color; }
+  return "13293d";
+}
+function hexA(hex,a){ const n=parseInt(hex,16); const r=(n>>16)&255,g=(n>>8)&255,b=n&255; return `rgba(${r},${g},${b},${a})`; }
+function groupsForFilter(){
+  const gs = STANDINGS.groups;
+  if(filter==="all") return gs;
+  if(filter==="P15"||filter==="F15") return gs.filter(g=>g.klass===filter);
+  const team = TEAMS.find(t=>t.slug===filter);
+  if(!team) return gs;
+  return gs.filter(g=>g.rows.some(r=>r.is_alingsas && r.team_id===team.id));
+}
+function renderTables(){
+  if(!STANDINGS || !STANDINGS.groups){ elTables.innerHTML=""; return; }
+  const groups = groupsForFilter();
+  if(!groups.length){ elTables.innerHTML='<div class="empty-tab">Inga tabeller för det här filtret.</div>'; return; }
+  let html="";
+  for(const g of groups){
+    const meColor = teamColorForGroup(g);
+    html += `<div class="gtable"><div class="gtitle"><span class="gcls">${esc(g.klass==="P15"?"Pojkar 15":"Flickor 15")}</span><span class="gname">${esc(g.name)}</span></div>`;
+    html += `<table class="gt"><thead><tr><th>#</th><th class="lt">Lag</th><th>S</th><th>±M</th><th>P</th></tr></thead><tbody>`;
+    let lastTier=null;
+    for(const r of g.rows){
+      if(r.tier && r.tier!==lastTier && r.pos!==1){
+        html += `<tr class="tier-row"><td colspan="5"><div class="bar ${tierClass(r.tier)}">${esc(r.tier)} ↓</div></td></tr>`;
+      }
+      if(r.tier) lastTier=r.tier;
+      const me = r.is_alingsas ? ` class="me" style="--mecol:${hexA(meColor,.16)};--meink:#${meColor}"` : "";
+      const diff = (r.diff>0?"+":"") + r.diff;
+      html += `<tr${me}><td class="pos">${r.pos}</td><td class="lt nm">${esc(r.name)}</td><td>${r.played}</td><td>${esc(diff)}</td><td class="pts">${r.points}</td></tr>`;
+    }
+    html += `</tbody></table></div>`;
+  }
+  elTables.innerHTML = html;
+}
+let btier = 0;
+function playoffForFilter(){
+  const ps = STANDINGS.playoffs || [];
+  if(!ps.length) return null;
+  if(filter==="P15"||filter==="F15") return ps.find(p=>p.klass===filter) || ps[0];
+  const team = TEAMS.find(t=>t.slug===filter);
+  if(team) return ps.find(p=>p.klass===team.klass) || ps[0];
+  return ps[0];
+}
+function bmRow(side, isWin, isLose){
+  const cls = isWin ? "bm-win" : (isLose ? "bm-lose" : "");
+  const g = side.goals==null ? "" : `<span class="g">${side.goals}</span>`;
+  return `<div class="row ${cls}"><span>${esc(side.label||"–")}</span>${g}</div>`;
+}
+function aliColor(m){
+  const s = m.home.is_alingsas ? m.home : (m.away.is_alingsas ? m.away : null);
+  if(s){ const t=TEAMS.find(t=>t.id===s.team_id); if(t) return t.color; }
+  return "999999";
+}
+function wirePan(el){
+  if(!el) return;
+  let down=false, sx=0, sl=0;
+  el.addEventListener("pointerdown", e=>{ down=true; sx=e.clientX; sl=el.scrollLeft; el.classList.add("drag"); el.setPointerCapture(e.pointerId); });
+  el.addEventListener("pointermove", e=>{ if(down) el.scrollLeft = sl - (e.clientX - sx); });
+  el.addEventListener("pointerup", ()=>{ down=false; el.classList.remove("drag"); });
+  el.addEventListener("pointercancel", ()=>{ down=false; el.classList.remove("drag"); });
+}
+function renderBracket(){
+  if(!STANDINGS || !STANDINGS.playoffs){ elBracket.innerHTML=""; return; }
+  const po = playoffForFilter();
+  if(!po || !po.tiers.length){ elBracket.innerHTML='<div class="empty-tab">Inget slutspel att visa.</div>'; return; }
+  if(btier>=po.tiers.length) btier=0;
+  // om ett enskilt lag är filtrerat: öppna den nivå laget projiceras till
+  const team = TEAMS.find(t=>t.slug===filter);
+  if(team && !renderBracket._userPicked){
+    const g = (STANDINGS.groups||[]).find(g=>g.rows.some(r=>r.is_alingsas && r.team_id===team.id));
+    const me = g && g.rows.find(r=>r.is_alingsas && r.team_id===team.id);
+    if(me && me.tier){ const idx = po.tiers.findIndex(t=>t.tier===me.tier); if(idx>=0) btier=idx; }
+  }
+  let html = `<div class="btabs">`;
+  po.tiers.forEach((t,i)=>{ html += `<button class="btab" data-i="${i}" aria-pressed="${i===btier}">${esc(t.tier.replace("-Slutspel",""))}</button>`; });
+  html += `</div><div class="bracket-scroll" id="bscroll"><div class="btree">`;
+  for(const rnd of po.tiers[btier].rounds){
+    html += `<div class="bcol"><div class="clabel">${esc(rnd.name)}</div>`;
+    for(const m of rnd.matches){
+      const hw = m.winner==="home", aw = m.winner==="away";
+      const ali = (m.home.is_alingsas||m.away.is_alingsas) ? " ali" : "";
+      const c = aliColor(m);
+      html += `<div class="bm${ali}" style="--c:#${c}">`+
+        bmRow(m.home, hw, aw) + bmRow(m.away, aw, hw) + `</div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div></div>`;
+  elBracket.innerHTML = html;
+  wirePan(document.getElementById("bscroll"));
+  elBracket.querySelector(".btabs").addEventListener("click", e=>{
+    const b=e.target.closest(".btab"); if(b){ renderBracket._userPicked=true; btier=+b.dataset.i; renderBracket(); }});
+}
+
 render();
 
 // kopiera-knappar
@@ -447,6 +645,7 @@ def js_matches(matches):
             "lag": m["lag"], "slug": m["slug"], "klass": m["klass"],
             "grp": m["grupp"], "home": m["hemma"], "away": m["borta"],
             "hb": m["hb"], "day": m["day_label"], "color": m["color"],
+            "res": m.get("result"),
         })
     out.sort(key=lambda x: x["ms"])
     return out
@@ -455,11 +654,12 @@ def js_matches(matches):
 def main():
     matches, meta = sch.load_matches()
     teams_js = [{"lag": t["lag"], "slug": t["slug"], "klass": md.short_klass(t["klass"]),
-                 "color": md.team_colors[t["lag"]]} for t in md.teams]
+                 "id": t["id"], "color": md.team_colors[t["lag"]]} for t in md.teams]
     html = (TEMPLATE
             .replace("__DATA__", json.dumps(js_matches(matches), ensure_ascii=False))
             .replace("__TEAMS__", json.dumps(teams_js, ensure_ascii=False))
             .replace("__DUR_MIN__", str(DUR_MIN))
+            .replace("__STANDINGS__", json.dumps(load_standings(), ensure_ascii=False))
             .replace("__CAL_ITEMS__", cal_section())
             .replace("__BASE__", md.PAGES_BASE)
             .replace("__UPDATED__", human_updated(meta)))
