@@ -15,6 +15,7 @@ from datetime import datetime
 
 import matches_data as md
 import schedule as sch
+import roster_data as rd
 
 DUR_MIN = md.MATCH_DURATION_MIN
 
@@ -143,6 +144,18 @@ table.gt{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums
 .tier-row .bar::before,.tier-row .bar::after{content:""; flex:1; height:2px; border-radius:2px; background:currentColor; opacity:.5}
 .tierA{color:#c79114} .tierB{color:var(--sea)} .tierC{color:#9a8f86}
 .empty-tab{padding:24px 4px; color:var(--ink-soft); text-align:center; font-weight:600}
+
+/* trupp */
+.rlist{list-style:none; margin:0; padding:0}
+.rlist li{display:flex; align-items:center; gap:10px; padding:8px 4px; border-bottom:1px solid var(--line)}
+.rlist li:last-child{border-bottom:none}
+.rnr{font-family:"Anton"; font-size:1rem; min-width:26px; text-align:center; color:var(--ink-soft)}
+.rnr.none{font-size:.7rem; opacity:.4}
+.rname{font-weight:700; flex:1}
+.rname .smek{font-weight:600; color:var(--ink-soft)}
+.rpos{font-size:.58rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  padding:3px 8px; border-radius:999px; border:1.5px solid var(--line); color:var(--ink-soft)}
+.rpos.mv{background:var(--ink); border-color:var(--ink); color:#fff}
 
 /* slutspelsträd */
 .btabs{display:flex; gap:6px; margin:14px 2px 8px}
@@ -273,6 +286,7 @@ footer a{color:var(--sea)}
     <button class="tab" id="tab-schema" data-view="schema" aria-pressed="true">Schema</button>
     <button class="tab" id="tab-tabeller" data-view="tabeller" aria-pressed="false" hidden>Tabeller</button>
     <button class="tab" id="tab-slutspel" data-view="slutspel" aria-pressed="false" hidden>Slutspel</button>
+    <button class="tab" id="tab-trupp" data-view="trupp" aria-pressed="false" hidden>Trupp</button>
   </nav>
 
   <nav class="filters" id="filters" aria-label="Filtrera lag"></nav>
@@ -282,6 +296,7 @@ footer a{color:var(--sea)}
 
   <section id="tables" hidden></section>
   <section id="bracket" hidden></section>
+  <section id="roster" hidden></section>
 
   <details class="cal">
     <summary>Lägg till i din kalender (valfritt)</summary>
@@ -314,6 +329,7 @@ const MATCHES = __DATA__;
 const TEAMS = __TEAMS__;
 const DUR = __DUR_MIN__ * 60000;
 const STANDINGS = __STANDINGS__;
+const ROSTERS = __ROSTERS__;
 let view = "schema";
 let filter = "all";
 
@@ -340,7 +356,7 @@ function pill(id, label, color, sun){
   b.setAttribute("aria-pressed", id === filter);
   b.dataset.id = id;
   b.innerHTML = (color ? `<span class="d" style="background:${color}"></span>` : "") + label;
-  b.onclick = () => { filter = id; saveFilter(id); render(); if(view==="tabeller") renderTables(); if(view==="slutspel") renderBracket(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
+  b.onclick = () => { filter = id; saveFilter(id); render(); if(view==="tabeller") renderTables(); if(view==="slutspel") renderBracket(); if(view==="trupp") renderRoster(); for(const p of fwrap.children) p.setAttribute("aria-pressed", p.dataset.id===id); };
   return b;
 }
 fwrap.appendChild(pill("all","Alla",null,true));
@@ -426,12 +442,16 @@ setInterval(render, 30000);
 const tabsWrap = document.getElementById("tabs");
 const elTables = document.getElementById("tables");
 const elBracket = document.getElementById("bracket");
+const elRoster = document.getElementById("roster");
 const elList = document.getElementById("list");
 const elHero = document.getElementById("hero");
 if(STANDINGS && STANDINGS.groups && STANDINGS.groups.length){
   document.getElementById("tab-tabeller").hidden = false;
   if(STANDINGS.playoffs && STANDINGS.playoffs.length) document.getElementById("tab-slutspel").hidden = false;
 }
+// Trupp-fliken visas bara om minst ett lag har spelare publicerade.
+const HAS_ROSTERS = ROSTERS && Object.values(ROSTERS).some(p => p && p.length);
+if(HAS_ROSTERS) document.getElementById("tab-trupp").hidden = false;
 function setView(v){
   view = v;
   for(const t of tabsWrap.children) t.setAttribute("aria-pressed", t.dataset.view===v);
@@ -439,8 +459,10 @@ function setView(v){
   elHero.hidden = !schema; elList.hidden = !schema;
   elTables.hidden = v!=="tabeller";
   elBracket.hidden = v!=="slutspel";
+  elRoster.hidden = v!=="trupp";
   if(v==="tabeller") renderTables();
   if(v==="slutspel") renderBracket();
+  if(v==="trupp") renderRoster();
 }
 tabsWrap.addEventListener("click", e=>{ const b=e.target.closest(".tab"); if(b) setView(b.dataset.view); });
 function tierClass(name){ return name && name[0]==="A" ? "tierA" : name && name[0]==="B" ? "tierB" : "tierC"; }
@@ -539,6 +561,47 @@ function renderBracket(){
   wirePan(document.getElementById("bscroll"));
   elBracket.querySelector(".btabs").addEventListener("click", e=>{
     const b=e.target.closest(".btab"); if(b){ renderBracket._userPicked=true; btier=+b.dataset.i; renderBracket(); }});
+}
+
+function teamsForRoster(){
+  if(filter==="all") return TEAMS;
+  if(filter==="P15"||filter==="F15") return TEAMS.filter(t=>t.klass===filter);
+  const team = TEAMS.find(t=>t.slug===filter);
+  return team ? [team] : [];
+}
+function sortRoster(players){
+  // Målvakter först, sen efter tröjnummer stigande; nummerlösa sist (A→Ö).
+  return players.slice().sort((a,b)=>{
+    const amv=a.pos==="MV"?0:1, bmv=b.pos==="MV"?0:1;
+    if(amv!==bmv) return amv-bmv;
+    const an=a.nr==null, bn=b.nr==null;
+    if(an!==bn) return an?1:-1;
+    if(!an && a.nr!==b.nr) return a.nr-b.nr;
+    return a.namn.localeCompare(b.namn, "sv");
+  });
+}
+function posLabel(pos){ return pos==="MV" ? "Målvakt" : pos==="UT" ? "Utespelare" : ""; }
+function renderRoster(){
+  const teams = teamsForRoster();
+  if(!teams.length){ elRoster.innerHTML='<div class="empty-tab">Ingen trupp för det här filtret.</div>'; return; }
+  let html="";
+  for(const t of teams){
+    const players = sortRoster((ROSTERS && ROSTERS[t.slug]) || []);
+    html += `<div class="gtable"><div class="gtitle"><span class="gcls">${esc(t.klass==="P15"?"Pojkar 15":"Flickor 15")}</span><span class="gname">${esc(t.lag)}</span></div>`;
+    if(!players.length){
+      html += `<div class="empty-tab">Trupp ej publicerad ännu.</div></div>`;
+      continue;
+    }
+    html += `<ul class="rlist">`;
+    for(const p of players){
+      const nr = p.nr==null ? `<span class="rnr none">–</span>` : `<span class="rnr">${p.nr}</span>`;
+      const smek = p.smek ? ` <span class="smek">”${esc(p.smek)}”</span>` : "";
+      const pos = p.pos ? `<span class="rpos${p.pos==="MV"?" mv":""}">${esc(posLabel(p.pos))}</span>` : "";
+      html += `<li>${nr}<span class="rname">${esc(p.namn)}${smek}</span>${pos}</li>`;
+    }
+    html += `</ul></div>`;
+  }
+  elRoster.innerHTML = html;
 }
 
 render();
@@ -660,6 +723,7 @@ def main():
             .replace("__TEAMS__", json.dumps(teams_js, ensure_ascii=False))
             .replace("__DUR_MIN__", str(DUR_MIN))
             .replace("__STANDINGS__", json.dumps(load_standings(), ensure_ascii=False))
+            .replace("__ROSTERS__", json.dumps(rd.rosters, ensure_ascii=False))
             .replace("__CAL_ITEMS__", cal_section())
             .replace("__BASE__", md.PAGES_BASE)
             .replace("__UPDATED__", human_updated(meta)))

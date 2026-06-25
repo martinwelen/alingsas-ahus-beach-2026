@@ -43,6 +43,24 @@ def test_bracket_render_present():
     assert "bm-lose" in html            # förlorar-strike-through-klass
 
 
+def test_rosters_data_injected():
+    html = _build()
+    assert "__ROSTERS__" not in html    # platshållaren ska vara ersatt
+    assert "ROSTERS =" in html
+    assert "Oskar Viklund" in html       # en spelare ur P15 Blå-truppen
+
+
+def test_trupp_tab_present():
+    html = _build()
+    assert 'id="tab-trupp"' in html
+    assert 'data-view="trupp"' in html
+
+
+def test_roster_render_function_present():
+    html = _build()
+    assert "function renderRoster()" in html
+
+
 def test_schedule_renders_score_markup():
     html = _build()
     assert '"res"' in html or "m.res" in html   # resultatfält propageras till JS
@@ -64,3 +82,6 @@ def test_graceful_without_standings():
     finally:
         if had:
             os.rename(bak, src)
+            # Bygg om så vi inte lämnar index.html på disk i "utan standings"-läge
+            # (annars riskerar en lokal `git add -A` att committa en trasig sida).
+            _build()
