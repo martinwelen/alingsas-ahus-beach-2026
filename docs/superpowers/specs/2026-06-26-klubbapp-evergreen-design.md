@@ -43,8 +43,9 @@ lösningen kan återanvändas år efter år = evergreen.
    runtime** med gamla. Isoleringen *är* säkerhetsgarantin — nya repot kan aldrig
    röra den live U15-appen. Beprövade skript kopieras in och generaliseras; gemensamma
    fixar portas manuellt (medvetet pris för säkerhet).
-4. **Mini (U8/U10/U11):** **schema bara** — inga resultat eller tabeller (minihandboll
-   rankas oftast inte; minst antaganden om oprovad resultatmodell).
+4. **Mini (U8/U10/U11):** **schema bara** — Mini har **inga tabeller och inget slutspel**
+   (bekräftat). Endast tider/banor/motståndare visas. (Mini räknar mål enligt reglerna
+   men publiceras inte som tabell — så resultat utelämnas.)
 5. **Internationella regler:** **förberedd söm, byggs senare.** Abstraktionen detekterar
    formatet, men set/shootout-renderaren byggs när det faktiskt behövs.
 
@@ -144,9 +145,8 @@ commit-bara-vid-ändring. Samma mönster som dagens robot.
   grupper med siffer-/blandade suffix (regeln i övrigt spikad: ett lag → blå; alla
   färgsuffix → respektive färg).
 - **Nya repots namn** + Pages-aktivering.
-- Bekräfta att Mini-klasser saknar tabell i API:t (annars döljs fliken ändå automatiskt).
-  OBS: Mini *räknar* mål (1 p/mål) — "schema bara" är ett produktval, inte tekniskt
-  tvång; kan omprövas om Mini-resultat önskas.
+- ~~Bekräfta att Mini saknar tabell i API:t~~ — **bekräftat:** Mini har inga tabeller
+  och inget slutspel.
 
 ## Implementationsordning (för writing-plans)
 
