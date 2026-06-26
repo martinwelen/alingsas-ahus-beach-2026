@@ -72,8 +72,10 @@ Ersätter den handskrivna `matches_data.teams`-listan med **upptäckt** från AP
 2. Härled per lag ur team-entiteten: `id`, kategori → **åldersnummer (U)** + **kön (P/F)**,
    `suffix` (Blå/Vit/1/2…), division (grupp), genererad `slug`.
 3. **Bucketa per åldersgrupp** → varje bucket = en app (kan rymma P och/eller F).
-4. **Färger** härleds ur suffix (Blå/Vit/Svart/Orange/Gul/Röd → resp.; siffror 1–4 →
-   palett) med fallback.
+4. **Färger** per åldersgrupp:
+   - **Ett enda lag** i gruppen → **blå** (klubbens standardfärg).
+   - **Alla lag har färgsuffix** (Blå/Vit/Svart/Orange/Gul/Röd…) → använd respektive färg.
+   - **Annars** (siffer- eller blandade suffix, flera lag) → palett per index.
 
 `fetch_standings.py` generaliseras likadant: grupptabeller + A/B/C-träd för klubbens
 alla divisioner, bucketade per åldersgrupp.
@@ -138,7 +140,9 @@ commit-bara-vid-ändring. Samma mönster som dagens robot.
 ## Öppna verifieringar
 
 - ~~Mini matchlängd för iCal~~ — **löst:** samma 11 min som Classic (arrangörens regler).
-- **Färg-härledning** täcker alla suffix som faktiskt dyker upp i klubbens 43 lag.
+- **Färg-härledning:** verifiera att palett-fallbacken ger distinkta färger för de
+  grupper med siffer-/blandade suffix (regeln i övrigt spikad: ett lag → blå; alla
+  färgsuffix → respektive färg).
 - **Nya repots namn** + Pages-aktivering.
 - Bekräfta att Mini-klasser saknar tabell i API:t (annars döljs fliken ändå automatiskt).
   OBS: Mini *räknar* mål (1 p/mål) — "schema bara" är ett produktval, inte tekniskt
