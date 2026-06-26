@@ -8,7 +8,13 @@
 
 **Tech Stack:** Python 3 (stdlib only: `urllib`, `re`, `json`, `hashlib`), pytest. Mirrors the proven patterns in the existing repo (`fetch_matches.py`, `fetch_standings.py`, `schedule.py`) but generalized.
 
-**Scope of this plan:** data layer only. Plan 2 = multi-app build + hub. Plan 3 = CI workflow + repo creation + Pages. This plan produces `data.json` and `standings.json`, inspectable by running the fetch scripts.
+**Scope of this plan:** data layer only. Plan 2 = multi-app build + hub. Plan 3 = CI workflow + repo creation + Pages. This plan produces a committed `data.json` (via `fetch_data.main`) plus the **pure** standings transforms (`winner_side`, `table_row`, `bucket_groups`). The standings *network wiring* and `standings.json` output are deferred to Plan 2 — `table_row`/`bucket_groups` are intentionally orphan (tested, not yet called) until then.
+
+**Deferred to Plan 2/3 (from the Plan 1 final review — honor these):**
+- **Plan 2 build must honor `profile.has_results`** — `data.json` carries `result` for Mini groups too, so the renderer must hide Mini results (spec: Mini = schema bara).
+- **Plan 2 standings wiring** — build `club_team_ids` + `tier_by_stage` and the Division$ConferenceTable/Playoff queries; reuse the transforms from Task 11; write `standings.json` bucketed by `age_slug`.
+- **Plan 2 per-team rendering note** — intra-club matches (both sides are club teams) attribute to the *home* team's slug/color only; fine for age-group bucketing, relevant only if rendering per-team schedules.
+- **Plan 3 CI** — `main()` always exits 0 (so the cron never breaks on a transient outage); add alerting on a distinct "fetched but 0 teams" condition if desired. `data.json` is a committed artifact; the hash-guard keeps no-op commits out.
 
 **Reference (read before starting):**
 - Spec: `docs/superpowers/specs/2026-06-26-klubbapp-evergreen-design.md`
