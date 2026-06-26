@@ -21,6 +21,11 @@ lösningen kan återanvändas år efter år = evergreen.
 - **Format:** **Classic** (U12–U18) och **Mini** (U8/U10/U11, "P8 Mini"/"F11 Mini"…).
   **Inga internationella Alingsås-lag 2026** — men internationella klasser finns i
   turneringen för andra klubbar.
+- **Matchtid & poäng** (arrangörens regler, ahusbeach.com/spelregler): Classic *och*
+  Mini kör **"2 × 5 min med 60 sek paus" = 11 min**, **1 poäng per mål**. Oavgjort i
+  slutspel avgörs av **sudden death / shoot-out** vars utfall hamnar i slutsiffran —
+  appens befintliga `winner_side` (härleder vinnare ur målsiffrorna) klarar detta.
+  Internationella 2-set-reglerna beskrivs inte på Classic-sidan.
 - **MatchResult är regel-agnostiskt:** samma objekt bär `homeGoals/awayGoals`
   (Classic) *och* `periodScores`/`pointsPerPeriod`/`winByPeriods`/`penalties`
   (set-baserat + shootout) *och* `homeState/awayState`. En hämtning täcker alla
@@ -132,10 +137,12 @@ commit-bara-vid-ändring. Samma mönster som dagens robot.
 
 ## Öppna verifieringar
 
-- **Mini matchlängd** för iCal (rimlig default tills arrangörens regler bekräftats).
+- ~~Mini matchlängd för iCal~~ — **löst:** samma 11 min som Classic (arrangörens regler).
 - **Färg-härledning** täcker alla suffix som faktiskt dyker upp i klubbens 43 lag.
 - **Nya repots namn** + Pages-aktivering.
 - Bekräfta att Mini-klasser saknar tabell i API:t (annars döljs fliken ändå automatiskt).
+  OBS: Mini *räknar* mål (1 p/mål) — "schema bara" är ett produktval, inte tekniskt
+  tvång; kan omprövas om Mini-resultat önskas.
 
 ## Implementationsordning (för writing-plans)
 
