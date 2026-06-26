@@ -762,7 +762,7 @@ def test_normalize_match_basic_fields():
     assert nm["hb"] == "Hemma"
     assert nm["mots"] == "Lugi HF 3"
     assert nm["grupp"] == "Grupp 2"
-    assert nm["tid"] == "21:30"          # 1783585800000 ms i CEST
+    assert nm["tid"] == "10:30"          # 1783585800000 ms = 08:30 UTC = 10:30 CEST
     assert nm["result"] is None
 
 
@@ -861,7 +861,7 @@ def normalize_match(e, store, reg_by_id):
         "datum": f"{dt.year:04d}-{dt.month:02d}-{dt.day:02d}",
         "dag": _SV_DAYS[dt.weekday()],
         "tid": f"{dt.hour:02d}:{dt.minute:02d}",
-        "bana": bana,
+        "bana": bana, "grupp": grupp,
         "hemma": hemma, "borta": borta,
         "mots": borta if hb == "Hemma" else hemma,
         "hb": hb, "result": result,
