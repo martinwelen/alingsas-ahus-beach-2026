@@ -36,7 +36,8 @@ lösningen kan återanvändas år efter år = evergreen.
 
 1. **Produktform:** en app **per åldersgrupp** (P+F ihop, som dagens app).
    ~10 appar, U-namngivna: **U8, U10, U11, U12, U13, U14, U15, U16, U17, U18.**
-2. **Distribution:** **nytt evergreen-repo** för klubb-systemet. **U15 stannar i
+2. **Distribution:** **nytt evergreen-repo `ahk-beach`** (URL
+   `martinwelen.github.io/ahk-beach/`) för klubb-systemet. **U15 stannar i
    gamla repot** (underhållbart, ej fryst — fixar kan begäras där). Hubben i nya
    repot länkar till U15-appens befintliga URL i stället för att generera en dubblett.
 3. **Kodisolering:** nya repot är en **självständig generaliserad build utan delad
@@ -55,7 +56,7 @@ lösningen kan återanvändas år efter år = evergreen.
 GAMLA repot  (alingsas-ahus-beach-2026)   — oförändrad URL, underhållbart
    └── U15-appen (P15+F15 Classic)         ← föräldrarnas installerade app, rörs ej
 
-NYA repot  (t.ex. alingsas-ahus-beach)     — evergreen, parametriserat
+NYA repot  (ahk-beach)                     — evergreen, parametriserat
    ├── /                 → hubb: listar alla åldersgrupper (U15 → GAMLA URL:en)
    ├── /u8/  /u10/  /u11/ → Mini-appar (schema bara)
    ├── /u12/ … /u18/      → Classic-appar (utom u15)
@@ -144,7 +145,7 @@ commit-bara-vid-ändring. Samma mönster som dagens robot.
 - **Färg-härledning:** verifiera att palett-fallbacken ger distinkta färger för de
   grupper med siffer-/blandade suffix (regeln i övrigt spikad: ett lag → blå; alla
   färgsuffix → respektive färg).
-- **Nya repots namn** + Pages-aktivering.
+- ~~Nya repots namn~~ — **valt:** `ahk-beach`. Kvar: skapa repot + aktivera GitHub Pages.
 - ~~Bekräfta att Mini saknar tabell i API:t~~ — **bekräftat:** Mini har inga tabeller
   och inget slutspel.
 
