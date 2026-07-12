@@ -1,11 +1,10 @@
 name: Uppdatera schema
 
-# Kör i GitHubs moln – ingen lokal dator behövs.
+# PENSIONERAD: U15 byggs och publiceras numera av ahk-beach (single source of
+# truth). Denna robot är avstängd så den inte skriver över den publiceringen.
+# Endast manuell körning kvar (nödfall), aldrig automatisk.
 on:
-  schedule:
-    - cron: "*/30 * * * *"        # normalt: var 30:e minut (no-op om inget ändrats)
-    - cron: "*/10 * 17,18 7 *"    # turneringshelgen 17-18 juli: var 10:e minut
-  workflow_dispatch:               # + manuell "Run workflow"-knapp
+  workflow_dispatch:
 
 concurrency:
   group: update-schema
