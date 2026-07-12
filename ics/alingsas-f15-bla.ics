@@ -1,131 +1,122 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Alingsas HK//Ahus Beach Handboll 2026//SV
+PRODID:-//Alingsas HK//Ahus Beach Handboll//SV
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:Alingsås HK F15 Classic (f. 2011) Blå – Åhus Beach 2026
+X-WR-CALNAME:Alingsås HK Blå – Åhus Beach
 X-WR-TIMEZONE:Europe/Stockholm
-X-WR-CALDESC:Flickor 15 år Classic (födda 2011) • Grupp 1. Källa: ahus
- beachhandboll.cupmanager.net
+X-WR-CALDESC:U15. Källa: ahusbeachhandboll.cupmanager.net
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
 BEGIN:VEVENT
-UID:f15-bla-vs-h-78-solvesborg-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-h-78-solvesborg-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T104500Z
 DTEND:20260717T105600Z
-SUMMARY:F15 Blå: Alingsås HK Blå – H 78 Sölvesborg
+SUMMARY:U15: Alingsås HK Blå – H 78 Sölvesborg
 LOCATION:Bana 12\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  hemmalag mot H 78 Sölvesborg.\nAvspark 12:45 (lokal tid). Matchtid 2×5 
- min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot H 78 Sölvesborg.\nAvspa
+ rk 12:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-hk-bjornen-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-hk-bjornen-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T123000Z
 DTEND:20260717T124100Z
-SUMMARY:F15 Blå: Alingsås HK Blå – HK Björnen
+SUMMARY:U15: Alingsås HK Blå – HK Björnen
 LOCATION:Bana 12\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  hemmalag mot HK Björnen.\nAvspark 14:30 (lokal tid). Matchtid 2×5 min +
-  60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot HK Björnen.\nAvspark 14
+ :30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-eslovs-hk-2-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-eslovs-hk-2-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T141500Z
 DTEND:20260717T142600Z
-SUMMARY:F15 Blå: Eslövs HK 2 – Alingsås HK Blå
+SUMMARY:U15: Eslövs HK 2 – Alingsås HK Blå
 LOCATION:Bana 17\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  bortalag mot Eslövs HK 2.\nAvspark 16:15 (lokal tid). Matchtid 2×5 min 
- + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot Eslövs HK 2.\nAvspark 1
+ 6:15 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-ifk-bankeryd-bla-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-ifk-bankeryd-bla-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T160000Z
 DTEND:20260717T161100Z
-SUMMARY:F15 Blå: IFK Bankeryd Blå – Alingsås HK Blå
+SUMMARY:U15: IFK Bankeryd Blå – Alingsås HK Blå
 LOCATION:Bana 17\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  bortalag mot IFK Bankeryd Blå.\nAvspark 18:00 (lokal tid). Matchtid 2×5
-  min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot IFK Bankeryd Blå.\nAvsp
+ ark 18:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-uppsala-hk-svart-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-uppsala-hk-svart-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T180000Z
 DTEND:20260717T181100Z
-SUMMARY:F15 Blå: Uppsala HK Svart – Alingsås HK Blå
+SUMMARY:U15: Uppsala HK Svart – Alingsås HK Blå
 LOCATION:Bana 12\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  bortalag mot Uppsala HK Svart.\nAvspark 20:00 (lokal tid). Matchtid 2×5 
- min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot Uppsala HK Svart.\nAvspa
+ rk 20:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-ifk-kristianstad-2-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-ifk-kristianstad-2-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T081500Z
 DTEND:20260718T082600Z
-SUMMARY:F15 Blå: Alingsås HK Blå – IFK Kristianstad 2
+SUMMARY:U15: Alingsås HK Blå – IFK Kristianstad 2
 LOCATION:Bana 11\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  hemmalag mot IFK Kristianstad 2.\nAvspark 10:15 (lokal tid). Matchtid 2×
- 5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot IFK Kristianstad 2.\nAvs
+ park 10:15 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-lodde-vikings-hk-svart-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-lodde-vikings-hk-svart-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T104500Z
 DTEND:20260718T105600Z
-SUMMARY:F15 Blå: Lödde Vikings HK Svart – Alingsås HK Blå
+SUMMARY:U15: Lödde Vikings HK Svart – Alingsås HK Blå
 LOCATION:Bana 2\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  bortalag mot Lödde Vikings HK Svart.\nAvspark 12:45 (lokal tid). Matchti
- d 2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot Lödde Vikings HK Svart.
+ \nAvspark 12:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:f15-bla-vs-huddinge-hk-1-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-f-bla-vs-huddinge-hk-1-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T120000Z
 DTEND:20260718T121100Z
-SUMMARY:F15 Blå: Alingsås HK Blå – Huddinge HK 1
+SUMMARY:U15: Alingsås HK Blå – Huddinge HK 1
 LOCATION:Bana 3\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Flickor 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar
-  hemmalag mot Huddinge HK 1.\nAvspark 14:00 (lokal tid). Matchtid 2×5 min
-  + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot Huddinge HK 1.\nAvspark 
+ 14:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT

@@ -1,146 +1,136 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Alingsas HK//Ahus Beach Handboll 2026//SV
+PRODID:-//Alingsas HK//Ahus Beach Handboll//SV
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:Alingsås HK P15 Classic (f. 2011) VIT – Åhus Beach 2026
+X-WR-CALNAME:Alingsås HK VIT – Åhus Beach
 X-WR-TIMEZONE:Europe/Stockholm
-X-WR-CALDESC:Pojkar 15 år Classic (födda 2011) • Grupp 1. Källa: ahusb
- eachhandboll.cupmanager.net
+X-WR-CALDESC:U15. Källa: ahusbeachhandboll.cupmanager.net
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
 BEGIN:VEVENT
-UID:p15-vit-vs-ifk-malmo-hf-1-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-ifk-malmo-hf-1-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T114500Z
 DTEND:20260717T115600Z
-SUMMARY:P15 Vit: Alingsås HK VIT – IFK Malmö HF 1
+SUMMARY:U15: Alingsås HK VIT – IFK Malmö HF 1
 LOCATION:Bana 7\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- hemmalag mot IFK Malmö HF 1.\nAvspark 13:45 (lokal tid). Matchtid 2×5 mi
- n + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot IFK Malmö HF 1.\nAvspar
+ k 13:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-ifk-tumba-hk-2-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-ifk-tumba-hk-2-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T133000Z
 DTEND:20260717T134100Z
-SUMMARY:P15 Vit: IFK Tumba HK 2 – Alingsås HK VIT
+SUMMARY:U15: IFK Tumba HK 2 – Alingsås HK VIT
 LOCATION:Bana 4\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- bortalag mot IFK Tumba HK 2.\nAvspark 15:30 (lokal tid). Matchtid 2×5 min
-  + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot IFK Tumba HK 2.\nAvspark
+  15:30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-if-hallby-hk-vit-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-if-hallby-hk-vit-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T151500Z
 DTEND:20260717T152600Z
-SUMMARY:P15 Vit: IF Hallby HK Vit – Alingsås HK VIT
+SUMMARY:U15: IF Hallby HK Vit – Alingsås HK VIT
 LOCATION:Bana 12\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- bortalag mot IF Hallby HK Vit.\nAvspark 17:15 (lokal tid). Matchtid 2×5 m
- in + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot IF Hallby HK Vit.\nAvspa
+ rk 17:15 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-lugi-hf-2-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-lugi-hf-2-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T170000Z
 DTEND:20260717T171100Z
-SUMMARY:P15 Vit: Lugi HF 2 – Alingsås HK VIT
+SUMMARY:U15: Lugi HF 2 – Alingsås HK VIT
 LOCATION:Bana 12\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- bortalag mot Lugi HF 2.\nAvspark 19:00 (lokal tid). Matchtid 2×5 min + 60
-  s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot Lugi HF 2.\nAvspark 19:0
+ 0 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-hk-halmstad-rod-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-hk-halmstad-rod-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260717T184500Z
 DTEND:20260717T185600Z
-SUMMARY:P15 Vit: Alingsås HK VIT – HK Halmstad Röd
+SUMMARY:U15: Alingsås HK VIT – HK Halmstad Röd
 LOCATION:Bana 11\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- hemmalag mot HK Halmstad Röd.\nAvspark 20:45 (lokal tid). Matchtid 2×5 m
- in + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot HK Halmstad Röd.\nAvspa
+ rk 20:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-hoors-hk-h-65-h65-vit-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-hoors-hk-h-65-h65-vit-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T084500Z
 DTEND:20260718T085600Z
-SUMMARY:P15 Vit: Höörs HK H 65 H65 vit – Alingsås HK VIT
+SUMMARY:U15: Höörs HK H 65 H65 vit – Alingsås HK VIT
 LOCATION:Bana 3\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- bortalag mot Höörs HK H 65 H65 vit.\nAvspark 10:45 (lokal tid). Matchtid
-  2×5 min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot Höörs HK H 65 H65 vit.
+ \nAvspark 10:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-ifk-kristianstad-3-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-ifk-kristianstad-3-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T094500Z
 DTEND:20260718T095600Z
-SUMMARY:P15 Vit: Alingsås HK VIT – IFK Kristianstad 3
+SUMMARY:U15: Alingsås HK VIT – IFK Kristianstad 3
 LOCATION:Bana 8\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- hemmalag mot IFK Kristianstad 3.\nAvspark 11:45 (lokal tid). Matchtid 2×5
-  min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot IFK Kristianstad 3.\nAvs
+ park 11:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-h43-lund-hf-1-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-h43-lund-hf-1-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T110000Z
 DTEND:20260718T111100Z
-SUMMARY:P15 Vit: H43 Lund HF 1 – Alingsås HK VIT
+SUMMARY:U15: H43 Lund HF 1 – Alingsås HK VIT
 LOCATION:Bana 8\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- bortalag mot H43 Lund HF 1.\nAvspark 13:00 (lokal tid). Matchtid 2×5 min 
- + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar bortalag mot H43 Lund HF 1.\nAvspark 
+ 13:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-UID:p15-vit-vs-hf-karlskrona-bla-grupp-1@ahusbeach2026.cupmanager.net
-DTSTAMP:20260704T140853Z
+UID:u15-p-vit-vs-hf-karlskrona-bla-grupp-1@ahusbeach.cupmanager.net
+DTSTAMP:20260712T152145Z
 DTSTART:20260718T121500Z
 DTEND:20260718T122600Z
-SUMMARY:P15 Vit: Alingsås HK VIT – HF Karlskrona Blå
+SUMMARY:U15: Alingsås HK VIT – HF Karlskrona Blå
 LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
-DESCRIPTION:Pojkar 15 år Classic (födda 2011)\nGrupp 1\nAlingsås spelar 
- hemmalag mot HF Karlskrona Blå.\nAvspark 14:15 (lokal tid). Matchtid 2×5
-  min + 60 s paus.\nKälla: ahusbeachhandboll.cupmanager.net
-SEQUENCE:1783174133
-LAST-MODIFIED:20260704T140853Z
+DESCRIPTION:Grupp 1\nAlingsås spelar hemmalag mot HF Karlskrona Blå.\nAvs
+ park 14:15 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
+SEQUENCE:1783867829
+LAST-MODIFIED:20260712T152145Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT

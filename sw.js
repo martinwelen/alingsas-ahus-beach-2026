@@ -1,6 +1,9 @@
-const C = "ahus-schema-v1";
+const C = "ahk-u15-v1";
+const LEGACY = ["ahus-schema-v1"];
 self.addEventListener("install", e => self.skipWaiting());
-self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
+self.addEventListener("activate", e => e.waitUntil(
+  Promise.all(LEGACY.map(k => caches.delete(k))).then(() => self.clients.claim())
+));
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;

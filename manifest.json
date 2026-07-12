@@ -1,7 +1,7 @@
 {
-  "name": "AHK Åhus Beach 2026",
-  "short_name": "AHK Åhus",
-  "description": "Matchschema för Alingsås HK på Åhus Beach Handboll 2026",
+  "name": "AHK U15",
+  "short_name": "AHK U15",
+  "description": "Matchschema för Alingsås HK U15 på Åhus Beach Handboll",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f4ecdb",
