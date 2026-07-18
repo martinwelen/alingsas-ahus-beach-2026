@@ -10,7 +10,7 @@ REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
 BEGIN:VEVENT
 UID:u15-f-vit-vs-skara-hf-2-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260717T111500Z
 DTEND:20260717T112600Z
 SUMMARY:U15: Skara HF 2 – Alingsås HK Vit
@@ -18,13 +18,13 @@ LOCATION:Bana 4\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar bortalag mot Skara HF 2.\nAvspark 13:
  15 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-stavsten-hk-2-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260717T130000Z
 DTEND:20260717T131100Z
 SUMMARY:U15: Alingsås HK Vit – Stavsten HK 2
@@ -32,13 +32,13 @@ LOCATION:Bana 7\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar hemmalag mot Stavsten HK 2.\nAvspark 
  15:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-gustavsbergs-if-hk-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260717T144500Z
 DTEND:20260717T145600Z
 SUMMARY:U15: Gustavsbergs IF HK – Alingsås HK Vit
@@ -46,13 +46,13 @@ LOCATION:Bana 11\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar bortalag mot Gustavsbergs IF HK.\nAvs
  park 16:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-ahus-handboll-1-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260717T163000Z
 DTEND:20260717T164100Z
 SUMMARY:U15: Alingsås HK Vit – Åhus Handboll 1
@@ -60,13 +60,13 @@ LOCATION:Bana 14\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar hemmalag mot Åhus Handboll 1.\nAvspa
  rk 18:30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-ifk-malmo-hf-gul-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260718T083000Z
 DTEND:20260718T084100Z
 SUMMARY:U15: IFK Malmö HF Gul – Alingsås HK Vit
@@ -74,13 +74,13 @@ LOCATION:Bana 3\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar bortalag mot IFK Malmö HF Gul.\nAvsp
  ark 10:30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-lodde-vikings-hk-rod-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260718T093000Z
 DTEND:20260718T094100Z
 SUMMARY:U15: Alingsås HK Vit – Lödde Vikings HK Röd
@@ -88,13 +88,13 @@ LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar hemmalag mot Lödde Vikings HK Röd.\
  nAvspark 11:30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-ystads-if-hf-1-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260718T104500Z
 DTEND:20260718T105600Z
 SUMMARY:U15: Alingsås HK Vit – Ystads IF HF 1
@@ -102,13 +102,13 @@ LOCATION:Bana 13\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar hemmalag mot Ystads IF HF 1.\nAvspark
   12:45 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-huddinge-hk-2-grupp-4@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260718T120000Z
 DTEND:20260718T121100Z
 SUMMARY:U15: Alingsås HK Vit – Huddinge HK 2
@@ -116,13 +116,13 @@ LOCATION:Bana 17\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:Grupp 4\nAlingsås spelar hemmalag mot Huddinge HK 2.\nAvspark 
  14:00 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 UID:u15-f-vit-vs-ifk-kristianstad-2-a-slutspel@ahusbeach.cupmanager.net
-DTSTAMP:20260718T174156Z
+DTSTAMP:20260718T181503Z
 DTSTART:20260718T133000Z
 DTEND:20260718T134100Z
 SUMMARY:U15: Alingsås HK Vit – IFK Kristianstad 2
@@ -130,7 +130,7 @@ LOCATION:Bana 7\, Åhus Beach Handboll\, Åhus
 DESCRIPTION:A-Slutspel\nAlingsås spelar hemmalag mot IFK Kristianstad 2.\n
  Avspark 15:30 (lokal tid).\nKälla: ahusbeachhandboll.cupmanager.net
 SEQUENCE:1784395351
-LAST-MODIFIED:20260718T174156Z
+LAST-MODIFIED:20260718T181503Z
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
